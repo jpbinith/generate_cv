@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { AuthBrand } from "@/components/ui/AuthBrand";
+import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { useSignUp } from "./hooks/useSignUp";
 import styles from "./SignUpModule.module.scss";
@@ -61,12 +63,7 @@ export function SignUpModule() {
 
       <main className={styles["sign-up__main"]}>
         <section className={styles["sign-up__shell"]}>
-          <header className={styles["sign-up__header"]}>
-            <h1 className={styles["sign-up__brand"]}>CV Automator</h1>
-            <p className={styles["sign-up__tagline"]}>
-              Elevate your career with a professional suite.
-            </p>
-          </header>
+          <AuthBrand />
 
           <div className={styles["sign-up__card"]}>
             <div className={styles["sign-up__intro"]}>
@@ -161,13 +158,13 @@ export function SignUpModule() {
                 </p>
               ) : null}
 
-              <button
+              <Button
                 className={styles["sign-up__submit"]}
-                type="submit"
                 disabled={isSubmitting}
+                type="submit"
               >
-                <span>{isSubmitting ? "Creating Account..." : "Create Account"}</span>
-              </button>
+                {isSubmitting ? "Creating Account..." : "Create Account"}
+              </Button>
             </form>
           </div>
 

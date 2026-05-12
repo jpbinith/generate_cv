@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { AuthBrand } from "@/components/ui/AuthBrand";
+import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { useSignIn } from "./hooks/useSignIn";
 import styles from "./SignInModule.module.scss";
@@ -52,12 +54,7 @@ export function SignInModule() {
 
       <main className={styles["sign-in__main"]}>
         <section className={styles["sign-in__shell"]}>
-          <header className={styles["sign-in__header"]}>
-            <h1 className={styles["sign-in__brand"]}>CV Automator</h1>
-            <p className={styles["sign-in__tagline"]}>
-              Elevate your career with a professional suite.
-            </p>
-          </header>
+          <AuthBrand />
 
           <div className={styles["sign-in__card"]}>
             <div className={styles["sign-in__intro"]}>
@@ -136,14 +133,15 @@ export function SignInModule() {
                 </p>
               ) : null}
 
-              <button
+              <Button
                 className={styles["sign-in__submit"]}
-                type="submit"
                 disabled={isSubmitting}
+                icon={<Icon name="login" />}
+                iconPosition="end"
+                type="submit"
               >
-                <span>{isSubmitting ? "Signing In..." : "Sign In"}</span>
-                <Icon name="login" />
-              </button>
+                {isSubmitting ? "Signing In..." : "Sign In"}
+              </Button>
             </form>
           </div>
 

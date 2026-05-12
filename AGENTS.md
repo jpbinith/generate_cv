@@ -91,6 +91,25 @@ apps/web/
 * Avoid placing feature logic directly inside `app/page.tsx`.
 * `app/page.tsx` should mainly compose modules.
 
+## Page Composition Rules
+
+Pages are composition layers.
+
+Pages may compose:
+- feature modules
+- shared UI components
+- layouts
+
+Pages must NOT contain:
+- business logic
+- feature API calls
+- complex feature state
+- large feature implementations
+
+Pages should remain thin and declarative.
+
+Feature implementation logic must remain inside modules.
+
 ## Frontend API Integration Rules
 
 * Do not call `fetch` directly inside components.

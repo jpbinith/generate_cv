@@ -49,25 +49,6 @@
   width: min(100%, 27.5rem);
 }
 
-.sign-in__header {
-  margin-bottom: var(--space-6);
-  text-align: center;
-}
-
-.sign-in__brand {
-  margin: 0 0 var(--space-2);
-  color: var(--color-primary);
-  font-size: clamp(2.25rem, 5vw, 3rem);
-  font-weight: 700;
-  letter-spacing: -0.04em;
-}
-
-.sign-in__tagline {
-  margin: 0;
-  color: var(--color-on-surface-variant);
-  font-size: 1rem;
-}
-
 .sign-in__card {
   border: 1px solid var(--color-outline-variant);
   border-radius: 0.8rem;
