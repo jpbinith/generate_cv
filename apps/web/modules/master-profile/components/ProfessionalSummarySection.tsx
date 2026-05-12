@@ -17,11 +17,17 @@ export function ProfessionalSummarySection({
       title="Professional Summary"
     >
       <div className={styles["professional-summary"]}>
-        <div className={styles["professional-summary__suggestion"]}>
-          <Icon name="psychology" />
-          <span>{suggestion}</span>
-        </div>
-        <textarea defaultValue={summary} rows={6} />
+        {suggestion ? (
+          <div className={styles["professional-summary__suggestion"]}>
+            <Icon name="psychology" />
+            <span>{suggestion}</span>
+          </div>
+        ) : null}
+        <textarea
+          defaultValue={summary}
+          placeholder="Write a concise summary of your experience, strengths, and career focus."
+          rows={6}
+        />
       </div>
     </SectionCard>
   );

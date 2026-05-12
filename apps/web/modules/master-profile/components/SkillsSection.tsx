@@ -20,6 +20,11 @@ export function SkillsSection({ groups }: SkillsSectionProps) {
               {group.title}
             </label>
             <div className={styles["skills-section__chips"]}>
+              {group.items.length === 0 ? (
+                <p className={styles["skills-section__empty"]}>
+                  No skills added yet.
+                </p>
+              ) : null}
               {group.items.map((item) => (
                 <span
                   key={item}

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { getMasterProfileViewModel } from "@/modules/master-profile/services/masterProfileMockService";
 import { EducationSection } from "@/modules/master-profile/components/EducationSection";
 import { PersonalInformationSection } from "@/modules/master-profile/components/PersonalInformationSection";
@@ -12,11 +13,30 @@ import styles from "./page.module.scss";
 
 export default function MasterProfilePage() {
   const viewModel = getMasterProfileViewModel();
+  const [isDirty, setIsDirty] = useState(false);
+  const [formVersion, setFormVersion] = useState(0);
+
+  function handleDirtyState() {
+    setIsDirty(true);
+  }
+
+  function handleDiscardChanges() {
+    setFormVersion((currentValue) => currentValue + 1);
+    setIsDirty(false);
+  }
+
+  function handleSaveChanges() {
+    setIsDirty(false);
+  }
 
   return (
     <div className={styles["master-profile"]}>
       <ProgressOverview data={viewModel.progressOverview} />
-      <div className={styles["master-profile__form-stack"]}>
+      <div
+        key={formVersion}
+        className={styles["master-profile__form-stack"]}
+        onChangeCapture={handleDirtyState}
+      >
         <PersonalInformationSection
           emailHelperText={viewModel.emailHelperText}
           personalInfo={viewModel.personalInfo}
@@ -29,7 +49,13 @@ export default function MasterProfilePage() {
         <EducationSection items={viewModel.education} />
         <SkillsSection groups={viewModel.skillGroups} />
       </div>
-      <StickySaveBar autosaveLabel={viewModel.autosaveLabel} />
+      {isDirty ? (
+        <StickySaveBar
+          autosaveLabel="You have unsaved changes"
+          onDiscard={handleDiscardChanges}
+          onSave={handleSaveChanges}
+        />
+      ) : null}
     </div>
   );
 }

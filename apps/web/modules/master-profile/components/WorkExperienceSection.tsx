@@ -93,6 +93,12 @@ export function WorkExperienceSection({ items }: WorkExperienceSectionProps) {
       title="Work Experience"
     >
       <div className={styles["work-experience"]}>
+        {!draftExperience && experienceItems.length === 0 ? (
+          <p className={styles["work-experience__empty"]}>
+            No work experience added yet.
+          </p>
+        ) : null}
+
         {draftExperience ? (
           <article
             className={`${styles["work-experience__item"]} ${styles["work-experience__item--draft"]}`}

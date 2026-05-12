@@ -4,6 +4,14 @@
   gap: var(--space-4);
 }
 
+.education-section__empty {
+  margin: 0;
+  border: 1px dashed var(--color-outline-variant);
+  border-radius: 0.7rem;
+  padding: 1rem;
+  color: var(--color-on-surface-variant);
+}
+
 .education-section__header-action {
   display: inline-flex;
   align-items: center;

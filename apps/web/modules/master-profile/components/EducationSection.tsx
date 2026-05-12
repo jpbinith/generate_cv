@@ -63,6 +63,12 @@ export function EducationSection({ items }: EducationSectionProps) {
       title="Education"
     >
       <div className={styles["education-section"]}>
+        {!draftEducation && educationItems.length === 0 ? (
+          <p className={styles["education-section__empty"]}>
+            No education entries added yet.
+          </p>
+        ) : null}
+
         {draftEducation ? (
           <article
             className={`${styles["education-section__draft"]} ${styles["education-section__item"]}`}
