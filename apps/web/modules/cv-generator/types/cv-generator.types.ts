@@ -4,24 +4,51 @@ export interface NavigationItem {
   active?: boolean;
 }
 
-export interface ProfileSelectionItem {
-  title: string;
-  description?: string;
-  checked: boolean;
-  muted?: boolean;
+export interface ProgressOverview {
+  completionPercentage: number;
+  summary: string;
+  tipTitle: string;
+  tipText: string;
 }
 
-export interface TemplateCard {
+export interface PersonalInfo {
+  fullName: string;
+  email: string;
+  phone: string;
+  linkedInUrl: string;
+}
+
+export interface WorkExperienceItem {
+  companyName: string;
+  roleTitle: string;
+  startDate: string;
+  endDate: string;
+  achievements: string[];
+}
+
+export interface EducationItem {
+  qualification: string;
+  institution: string;
+  period: string;
+}
+
+export interface SkillGroup {
   title: string;
-  src: string;
-  active?: boolean;
+  tone: "primary" | "tertiary";
+  items: string[];
+  addLabel: string;
 }
 
 export interface CvGeneratorViewModel {
   navigationItems: NavigationItem[];
-  keywords: string[];
-  profileSelections: ProfileSelectionItem[];
-  previewProfileName: string;
-  previewProfileTitle: string;
-  templates: TemplateCard[];
+  topBarTitle: string;
+  progressOverview: ProgressOverview;
+  personalInfo: PersonalInfo;
+  emailHelperText: string;
+  summarySuggestion: string;
+  professionalSummary: string;
+  workExperience: WorkExperienceItem[];
+  education: EducationItem[];
+  skillGroups: SkillGroup[];
+  autosaveLabel: string;
 }

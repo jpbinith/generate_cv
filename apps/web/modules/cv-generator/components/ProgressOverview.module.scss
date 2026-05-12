@@ -1,0 +1,108 @@
+.progress-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(16rem, 1fr);
+  gap: var(--space-5);
+  margin-bottom: var(--space-6);
+}
+
+.progress-overview__status,
+.progress-overview__tip {
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.85rem;
+  background: #ffffff;
+  box-shadow: var(--shadow-soft);
+}
+
+.progress-overview__status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  padding: var(--space-5);
+}
+
+.progress-overview__content {
+  flex: 1;
+}
+
+.progress-overview__title {
+  margin: 0 0 var(--space-2);
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.progress-overview__summary {
+  margin: 0 0 var(--space-4);
+  color: var(--color-on-surface-variant);
+}
+
+.progress-overview__track {
+  overflow: hidden;
+  height: 0.75rem;
+  border-radius: 999px;
+  background: #e6ebf4;
+}
+
+.progress-overview__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #1851d4, #3c7cff);
+}
+
+.progress-overview__metric {
+  min-width: 7rem;
+  text-align: right;
+}
+
+.progress-overview__percentage {
+  color: var(--color-primary);
+  font-size: 2.4rem;
+  font-weight: 800;
+}
+
+.progress-overview__hint {
+  margin: 0.35rem 0 0;
+  color: var(--color-on-surface-variant);
+  font-size: 0.85rem;
+}
+
+.progress-overview__tip {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  background: linear-gradient(180deg, #2c63e0 0%, #1a52cf 100%);
+  color: #eff4ff;
+}
+
+.progress-overview__tip-icon {
+  font-size: 2rem;
+}
+
+.progress-overview__tip-title {
+  margin: 0 0 var(--space-2);
+  font-weight: 700;
+}
+
+.progress-overview__tip-text {
+  margin: 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 1024px) {
+  .progress-overview {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .progress-overview__status {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .progress-overview__metric {
+    text-align: left;
+  }
+}

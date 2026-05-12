@@ -2,18 +2,22 @@ import { Icon } from "@/components/ui/Icon";
 import Image from "next/image";
 import styles from "./TopBar.module.scss";
 
-export function TopBar() {
+interface TopBarProps {
+  title: string;
+}
+
+export function TopBar({ title }: TopBarProps) {
   return (
     <div className={styles["top-bar"]}>
       <div className={styles["top-bar__heading"]}>
         <p className={styles["top-bar__eyebrow"]}>AI CV Generator</p>
-        <h2 className={styles["top-bar__title"]}>Generator Dashboard</h2>
+        <h2 className={styles["top-bar__title"]}>{title}</h2>
       </div>
 
       <div className={styles["top-bar__actions"]}>
         <label className={styles["top-bar__search"]}>
           <Icon className={styles["top-bar__search-icon"]} name="search" />
-          <input placeholder="Search CVs..." type="text" />
+          <input placeholder="Search data..." type="text" />
         </label>
 
         <button className={styles["top-bar__icon-button"]} type="button">

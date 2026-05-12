@@ -5,9 +5,13 @@ import { AppShell } from "@/components/layout/AppShell";
 import { SidebarNav } from "@/components/layout/SidebarNav";
 import { TopBar } from "@/components/layout/TopBar";
 import { getCvGeneratorViewModel } from "./services/cvGeneratorMockService";
-import { JobDescriptionPanel } from "./components/JobDescriptionPanel";
-import { PreviewPanel } from "./components/PreviewPanel";
-import { ProfileSelectionPanel } from "./components/ProfileSelectionPanel";
+import { EducationSection } from "./components/EducationSection";
+import { PersonalInformationSection } from "./components/PersonalInformationSection";
+import { ProfessionalSummarySection } from "./components/ProfessionalSummarySection";
+import { ProgressOverview } from "./components/ProgressOverview";
+import { SkillsSection } from "./components/SkillsSection";
+import { StickySaveBar } from "./components/StickySaveBar";
+import { WorkExperienceSection } from "./components/WorkExperienceSection";
 import styles from "./CvGeneratorModule.module.scss";
 
 export function CvGeneratorModule() {
@@ -26,18 +30,24 @@ export function CvGeneratorModule() {
           }
         />
       }
-      topbar={<TopBar />}
+      topbar={<TopBar title={viewModel.topBarTitle} />}
     >
       <div className={styles["cv-generator"]}>
-        <div className={styles["cv-generator__workspace"]}>
-          <JobDescriptionPanel keywords={viewModel.keywords} />
-          <ProfileSelectionPanel items={viewModel.profileSelections} />
+        <ProgressOverview data={viewModel.progressOverview} />
+        <div className={styles["cv-generator__form-stack"]}>
+          <PersonalInformationSection
+            emailHelperText={viewModel.emailHelperText}
+            personalInfo={viewModel.personalInfo}
+          />
+          <ProfessionalSummarySection
+            suggestion={viewModel.summarySuggestion}
+            summary={viewModel.professionalSummary}
+          />
+          <WorkExperienceSection items={viewModel.workExperience} />
+          <EducationSection items={viewModel.education} />
+          <SkillsSection groups={viewModel.skillGroups} />
         </div>
-        <PreviewPanel
-          profileName={viewModel.previewProfileName}
-          profileTitle={viewModel.previewProfileTitle}
-          templates={viewModel.templates}
-        />
+        <StickySaveBar autosaveLabel={viewModel.autosaveLabel} />
       </div>
     </AppShell>
   );

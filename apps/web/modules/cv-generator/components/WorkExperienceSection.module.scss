@@ -1,0 +1,95 @@
+.work-experience {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.work-experience__header-action {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  border: 0;
+  background: transparent;
+  color: var(--color-primary);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.work-experience__item {
+  position: relative;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.7rem;
+  background: #ffffff;
+  padding: 1rem;
+}
+
+.work-experience__toolbar {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  gap: var(--space-2);
+}
+
+.work-experience__toolbar button {
+  border: 0;
+  background: transparent;
+  color: var(--color-on-surface-variant);
+  cursor: pointer;
+}
+
+.work-experience__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.work-experience__field,
+.work-experience__achievements {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.work-experience__field span,
+.work-experience__achievements span {
+  color: var(--color-on-surface-variant);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.work-experience__field input,
+.work-experience__achievements textarea {
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.7rem;
+  background: #ffffff;
+  padding: 0.85rem 1rem;
+}
+
+.work-experience__dates {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.work-experience__dates input {
+  flex: 1;
+}
+
+.work-experience__achievements textarea {
+  resize: vertical;
+  min-height: 7rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 720px) {
+  .work-experience__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .work-experience__dates {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

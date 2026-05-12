@@ -3,57 +3,75 @@ import type { CvGeneratorViewModel } from "../types/cv-generator.types";
 export function getCvGeneratorViewModel(): CvGeneratorViewModel {
   return {
     navigationItems: [
-      { label: "Dashboard", icon: "dashboard", active: true },
-      { label: "Master Profile", icon: "account_circle" },
+      { label: "Dashboard", icon: "dashboard" },
+      { label: "Master Profile", icon: "account_circle", active: true },
       { label: "CV History", icon: "history" },
       { label: "Templates", icon: "description" },
     ],
-    keywords: [
-      "Cloud Architecture",
-      "Agile Leadership",
-      "Stakeholder Management",
-      "Python",
-      "Data Governance",
-    ],
-    profileSelections: [
+    topBarTitle: "Master Profile",
+    progressOverview: {
+      completionPercentage: 85,
+      summary:
+        "Complete your profile to generate high-impact resumes with one click.",
+      tipTitle: "Tip of the day",
+      tipText:
+        "Quantify your achievements using percentages or dollar amounts to make your CV stand out to recruiters.",
+    },
+    personalInfo: {
+      fullName: "Alexander Morgan",
+      email: "a.morgan@professional.com",
+      phone: "+1 (555) 012-3456",
+      linkedInUrl: "linkedin.com/in/alexandermorgan",
+    },
+    emailHelperText:
+      "Use a professional email address like name.surname@provider.com",
+    summarySuggestion:
+      'AI Suggestion: "Dynamic Marketing Executive with 10+ years experience..."',
+    professionalSummary:
+      "Dynamic and results-driven Senior Project Manager with over 8 years of experience in leading multi-disciplinary teams through complex software development lifecycles. Proven track record of delivering projects 15% under budget while maintaining 100% quality compliance. Expert in Agile methodologies and stakeholder management.",
+    workExperience: [
       {
-        title: "Senior Solutions Architect @ TechCorp",
-        description:
-          "Led migration of legacy systems to AWS, resulting in 40% cost reduction.",
-        checked: true,
+        companyName: "TechGlobal Systems",
+        roleTitle: "Senior Project Manager",
+        startDate: "Jan 2020",
+        endDate: "Present",
+        achievements: [
+          "Managed a $2.5M digital transformation project for a Fortune 500 client.",
+          "Increased team productivity by 25% through the implementation of new CI/CD workflows.",
+          "Led a cross-functional team of 15 developers and designers.",
+        ],
       },
       {
-        title: "Open Source Project: DataViz Library",
-        description:
-          "Built a React-based visualization library with 5k+ GitHub stars.",
-        checked: true,
-      },
-      {
-        title: "Certification: PMP Leadership",
-        checked: false,
-      },
-      {
-        title: "Junior Web Developer @ StartUp Inc",
-        checked: false,
-        muted: true,
-      },
-    ],
-    previewProfileName: "ALEX R. STERLING",
-    previewProfileTitle: "SENIOR SOLUTIONS ARCHITECT",
-    templates: [
-      {
-        title: "Modern template",
-        src: "https://lh3.googleusercontent.com/aida-public/AB6AXuC35ktq3iyUo6YnrqulI0rwXmr1_wMNCIhy6aof0g0Wijor_g7M80Jm6k-RnWSH6c7dhZ7c6Kd1AEU99PR7H8nsQaTUfDFUeOt9JeI4UHiyJ3zt8OGYPypsSFKs8o9EIfIxz_DQrk89RbVT96VyOq-Y0USedTZ9e0rLU5mwmKe6Hjr7zypglDPy0PwVgyIsMkOxsgA41Bm-cmDZnxqRwWDQ753BCizw_PEQ8Kk0euwAeicNu1qtwHeRcJ-4cLsUt9YKUv3j31meTcJr",
-        active: true,
-      },
-      {
-        title: "Executive template",
-        src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAkOYBWoasCaSNiODhj8EmGmOzx_N8DKsa6-oPnryoAdG0jCGKhG8dlV0ZTkD5CcpymlyO2cNs_4u462ZFA3hZkwBEm2K_QKmiEIvAOhXi47FtfqcsF-3BgYuIIyLyuf5pSVGhUktai9nm7FxiQ0QJUmp-oHEZByFcQzL22UpMp4LXxAynwwotzzaxCmnXc8z8J4acjW_8fPETT1zrNwWbU7YOju5DjDyOclNsEBOVIPp07FCwxnEbJvwdkAUaq0OdLntFP-dPqXUZ7",
-      },
-      {
-        title: "Creative template",
-        src: "https://lh3.googleusercontent.com/aida-public/AB6AXuC9sUwy2luSoMegjTsDZ2iG2QstRxt2xpNk_LRs_ElBSR5hPsr1LgxO5yZl3sn8LzLp8G1_0WNKspiA9Beyz4SpWe_I19P1ji6Ipw2IS68LEMQEGhsS9Hsj9ChUfvqaKRnkWaHIV7qxyqidLMx8agD_mlU9Nk2N1hSuluQdcVxv4wAtCCwjKyzlQQr0O0X2qQ1BUCi1n_-OcU_nGy9uc-naBeZGyhZycC7sfJfYp-FYqJtzOiVb9fox0XSErsV3BlLo90EFrWq2z4V1",
+        companyName: "Innovate Solutions",
+        roleTitle: "Project Coordinator",
+        startDate: "Jun 2017",
+        endDate: "Dec 2019",
+        achievements: [
+          "Coordinated release planning across distributed product and engineering teams.",
+        ],
       },
     ],
+    education: [
+      {
+        qualification: "M.S. in Software Engineering",
+        institution: "Stanford University",
+        period: "2016 - 2018",
+      },
+    ],
+    skillGroups: [
+      {
+        title: "Technical Skills",
+        tone: "primary",
+        items: ["Agile Methodology", "Jira/Confluence", "Python", "SQL"],
+        addLabel: "+ Add Skill",
+      },
+      {
+        title: "Soft Skills",
+        tone: "tertiary",
+        items: ["Public Speaking", "Conflict Resolution"],
+        addLabel: "+ Add Skill",
+      },
+    ],
+    autosaveLabel: "Last autosaved 2 minutes ago",
   };
 }
