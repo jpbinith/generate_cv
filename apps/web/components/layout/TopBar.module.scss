@@ -3,8 +3,8 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  border-bottom: 1px solid rgba(203, 213, 225, 0.72);
-  background: rgba(248, 250, 252, 0.86);
+  border-bottom: 1px solid var(--color-outline-variant);
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(16px);
   padding: var(--space-4) var(--space-6);
 }
@@ -27,6 +27,7 @@
   font-size: 1.75rem;
   font-weight: 800;
   letter-spacing: -0.03em;
+  color: var(--color-primary);
 }
 
 .top-bar__actions {
@@ -42,7 +43,7 @@
   min-width: 16rem;
   border: 1px solid var(--color-outline-variant);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.84);
+  background: #f7f8fc;
   padding: 0 0.9rem;
 }
 
@@ -66,7 +67,7 @@
   height: 2.75rem;
   border: 1px solid var(--color-outline-variant);
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.84);
+  background: #f3f5fa;
   color: var(--color-secondary);
   cursor: pointer;
 }

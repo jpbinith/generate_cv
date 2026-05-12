@@ -43,7 +43,7 @@
   resize: vertical;
   border: 1px solid var(--color-outline-variant);
   border-radius: var(--radius-lg);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(219, 234, 254, 0.32));
+  background: #fbfcff;
   padding: var(--space-4);
   outline: none;
   transition:
@@ -53,7 +53,7 @@
 
 .job-description__field:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+  box-shadow: 0 0 0 4px rgba(19, 73, 208, 0.1);
 }
 
 .job-description__keywords {

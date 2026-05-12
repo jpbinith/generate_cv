@@ -36,7 +36,7 @@
 .preview-panel__sheet {
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(203, 213, 225, 0.8);
+  border: 1px solid var(--color-outline-variant);
   border-radius: var(--radius-lg);
   background: #ffffff;
   padding: var(--space-7);
@@ -49,8 +49,8 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(135deg, rgba(37, 99, 235, 0.06), transparent 24%),
-    linear-gradient(180deg, transparent, rgba(15, 23, 42, 0.02));
+    linear-gradient(135deg, rgba(19, 73, 208, 0.035), transparent 24%),
+    linear-gradient(180deg, transparent, rgba(20, 26, 43, 0.015));
   pointer-events: none;
 }
 
@@ -88,7 +88,7 @@
   width: 100%;
   height: 0.5rem;
   border-radius: 999px;
-  background: linear-gradient(90deg, #dbeafe, #cbd5e1);
+  background: linear-gradient(90deg, #e7ebf3, #dfe5f0);
 }
 
 .preview-panel__skeleton-line--short {
@@ -104,11 +104,11 @@
   right: var(--space-4);
   bottom: var(--space-4);
   max-width: 13rem;
-  border: 1px solid rgba(37, 99, 235, 0.18);
+  border: 1px solid rgba(19, 73, 208, 0.18);
   border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.96);
   padding: var(--space-3);
-  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 10px 24px rgba(28, 40, 86, 0.08);
 }
 
 .preview-panel__suggestion-header {
@@ -155,7 +155,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(37, 99, 235, 0.92);
+  background: rgba(19, 73, 208, 0.95);
   color: var(--color-on-primary);
   padding: 0.2rem 0;
   font-size: 0.65rem;
@@ -168,7 +168,7 @@
   justify-content: center;
   border: 1px solid var(--color-outline-variant);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.72);
+  background: #f3f5fa;
   color: var(--color-tertiary);
   cursor: pointer;
   aspect-ratio: 3 / 4;
