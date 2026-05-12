@@ -1,5 +1,5 @@
-import { CvGeneratorModule } from "@/modules/cv-generator";
+import { SignInModule } from "@/modules/sign-in";
 
 export default function Home() {
-  return <CvGeneratorModule />;
+  return <SignInModule />;
 }

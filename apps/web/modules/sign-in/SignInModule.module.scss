@@ -1,0 +1,214 @@
+.sign-in {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  background: var(--color-surface);
+  color: var(--color-on-surface);
+  overflow: hidden;
+}
+
+.sign-in__background {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.sign-in__glow {
+  position: absolute;
+  width: 42rem;
+  height: 42rem;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.45;
+}
+
+.sign-in__glow:first-child {
+  top: -12rem;
+  right: -8rem;
+  background: rgba(180, 197, 255, 0.36);
+}
+
+.sign-in__glow:last-child {
+  bottom: -18rem;
+  left: -8rem;
+  background: rgba(218, 226, 253, 0.34);
+}
+
+.sign-in__main {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+.sign-in__shell {
+  width: min(100%, 27.5rem);
+}
+
+.sign-in__header {
+  margin-bottom: var(--space-7);
+  text-align: center;
+}
+
+.sign-in__brand {
+  margin: 0 0 var(--space-2);
+  color: var(--color-primary);
+  font-size: clamp(2.25rem, 5vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.sign-in__tagline {
+  margin: 0;
+  color: var(--color-on-surface-variant);
+  font-size: 1rem;
+}
+
+.sign-in__card {
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.8rem;
+  background: var(--color-surface-container-lowest);
+  padding: var(--space-6);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+}
+
+.sign-in__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.sign-in__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sign-in__field-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.sign-in__label {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.sign-in__link,
+.sign-in__signup-link,
+.sign-in__footer-link {
+  color: var(--color-primary);
+  transition: opacity 180ms ease, color 180ms ease;
+}
+
+.sign-in__link {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.sign-in__link:hover,
+.sign-in__signup-link:hover,
+.sign-in__footer-link:hover {
+  opacity: 0.8;
+}
+
+.sign-in__input {
+  height: 3rem;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.4rem;
+  background: var(--color-surface-container-lowest);
+  padding: 0 1rem;
+  color: inherit;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background-color 180ms ease;
+}
+
+.sign-in__input::placeholder {
+  color: color-mix(in srgb, var(--color-on-surface-variant) 40%, transparent);
+}
+
+.sign-in__input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.sign-in__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: 3rem;
+  border: 0;
+  border-radius: 0.4rem;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    transform 180ms ease,
+    opacity 180ms ease;
+}
+
+.sign-in__submit:hover {
+  background: #0053db;
+}
+
+.sign-in__submit:active {
+  transform: scale(0.98);
+}
+
+.sign-in__signup {
+  margin: var(--space-5) 0 0;
+  color: var(--color-on-surface-variant);
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.sign-in__signup-link {
+  margin-left: var(--space-1);
+  font-weight: 600;
+}
+
+.sign-in__footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  gap: var(--space-6);
+  padding: var(--space-5);
+  opacity: 0.72;
+}
+
+.sign-in__footer-link {
+  color: var(--color-on-surface-variant);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .sign-in__card {
+    padding: var(--space-5);
+  }
+
+  .sign-in__field-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .sign-in__footer {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+  }
+}
