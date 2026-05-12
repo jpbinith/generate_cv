@@ -1,8 +1,79 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Icon } from "@/components/ui/Icon";
+import {
+  SignUpRequestError,
+  signUp,
+} from "./services/sign-up.service";
 import styles from "./SignUpModule.module.scss";
+import type { SignUpFormValues } from "./types/sign-up.types";
 
 export function SignUpModule() {
+  const router = useRouter();
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [serverError, setServerError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [formValues, setFormValues] = useState<SignUpFormValues>({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setIsSubmitting(true);
+    setServerError("");
+    setSuccessMessage("");
+    setFieldErrors({});
+
+    try {
+      const response = await signUp(formValues);
+      setSuccessMessage(response.message);
+      setFormValues({
+        name: "",
+        email: "",
+        password: "",
+      });
+      window.setTimeout(() => {
+        router.push("/");
+      }, 1200);
+    } catch (error: unknown) {
+      if (error instanceof SignUpRequestError) {
+        setServerError(error.message);
+        setFieldErrors(error.fieldErrors);
+      } else {
+        setServerError("Unable to create account right now.");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  function handleChange(
+    field: keyof SignUpFormValues,
+    value: string,
+  ) {
+    setFormValues((currentValues) => ({
+      ...currentValues,
+      [field]: value,
+    }));
+
+    setFieldErrors((currentErrors) => {
+      if (!(field in currentErrors)) {
+        return currentErrors;
+      }
+
+      const nextErrors = { ...currentErrors };
+      delete nextErrors[field];
+      return nextErrors;
+    });
+  }
+
   return (
     <div className={styles["sign-up"]}>
       <div className={styles["sign-up__background"]} aria-hidden="true">
@@ -27,15 +98,22 @@ export function SignUpModule() {
               </p>
             </div>
 
-            <form className={styles["sign-up__form"]}>
+            <form className={styles["sign-up__form"]} onSubmit={handleSubmit}>
               <label className={styles["sign-up__field"]}>
                 <span className={styles["sign-up__label"]}>Full Name</span>
                 <input
                   className={styles["sign-up__input"]}
-                  name="full-name"
+                  name="name"
                   placeholder="John Doe"
                   type="text"
+                  value={formValues.name}
+                  onChange={(event) => handleChange("name", event.target.value)}
                 />
+                {fieldErrors.name ? (
+                  <p className={styles["sign-up__field-error"]}>
+                    {fieldErrors.name}
+                  </p>
+                ) : null}
               </label>
 
               <label className={styles["sign-up__field"]}>
@@ -45,7 +123,14 @@ export function SignUpModule() {
                   name="email"
                   placeholder="john@example.com"
                   type="email"
+                  value={formValues.email}
+                  onChange={(event) => handleChange("email", event.target.value)}
                 />
+                {fieldErrors.email ? (
+                  <p className={styles["sign-up__field-error"]}>
+                    {fieldErrors.email}
+                  </p>
+                ) : null}
               </label>
 
               <div className={styles["sign-up__field"]}>
@@ -58,13 +143,20 @@ export function SignUpModule() {
                     className={styles["sign-up__input"]}
                     name="password"
                     placeholder="••••••••"
-                    type="password"
+                    type={isPasswordVisible ? "text" : "password"}
+                    value={formValues.password}
+                    onChange={(event) =>
+                      handleChange("password", event.target.value)
+                    }
                   />
                   <button
                     className={styles["sign-up__visibility-toggle"]}
                     type="button"
+                    onClick={() =>
+                      setIsPasswordVisible((currentValue) => !currentValue)
+                    }
                   >
-                    <Icon name="visibility" />
+                    <Icon name={isPasswordVisible ? "visibility_off" : "visibility"} />
                   </button>
                 </div>
 
@@ -72,10 +164,31 @@ export function SignUpModule() {
                   Must be at least 8 characters with a mix of letters and
                   numbers.
                 </p>
+                {fieldErrors.password ? (
+                  <p className={styles["sign-up__field-error"]}>
+                    {fieldErrors.password}
+                  </p>
+                ) : null}
               </div>
 
-              <button className={styles["sign-up__submit"]} type="submit">
-                <span>Create Account</span>
+              {serverError ? (
+                <p className={styles["sign-up__form-message"]}>{serverError}</p>
+              ) : null}
+
+              {successMessage ? (
+                <p
+                  className={`${styles["sign-up__form-message"]} ${styles["sign-up__form-message--success"]}`}
+                >
+                  {successMessage}
+                </p>
+              ) : null}
+
+              <button
+                className={styles["sign-up__submit"]}
+                type="submit"
+                disabled={isSubmitting}
+              >
+                <span>{isSubmitting ? "Creating Account..." : "Create Account"}</span>
               </button>
             </form>
           </div>
