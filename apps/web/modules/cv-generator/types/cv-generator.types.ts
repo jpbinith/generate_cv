@@ -21,6 +21,7 @@ export interface PersonalInfo {
 export interface WorkExperienceItem {
   companyName: string;
   roleTitle: string;
+  location: string;
   startDate: string;
   endDate: string;
   achievements: string[];

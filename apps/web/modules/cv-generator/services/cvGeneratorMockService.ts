@@ -33,6 +33,7 @@ export function getCvGeneratorViewModel(): CvGeneratorViewModel {
       {
         companyName: "TechGlobal Systems",
         roleTitle: "Senior Project Manager",
+        location: "San Francisco, CA",
         startDate: "Jan 2020",
         endDate: "Present",
         achievements: [
@@ -44,6 +45,7 @@ export function getCvGeneratorViewModel(): CvGeneratorViewModel {
       {
         companyName: "Innovate Solutions",
         roleTitle: "Project Coordinator",
+        location: "Austin, TX",
         startDate: "Jun 2017",
         endDate: "Dec 2019",
         achievements: [

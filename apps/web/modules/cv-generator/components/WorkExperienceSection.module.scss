@@ -23,6 +23,22 @@
   padding: 1rem;
 }
 
+.work-experience__item--draft {
+  border-color: #9db7ff;
+  background: #f9fbff;
+}
+
+.work-experience__draft-badge {
+  display: inline-flex;
+  margin-bottom: var(--space-4);
+  border-radius: 999px;
+  background: #dfe7ff;
+  color: var(--color-primary);
+  padding: 0.45rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
 .work-experience__toolbar {
   position: absolute;
   top: 1rem;
@@ -83,6 +99,34 @@
   line-height: 1.6;
 }
 
+.work-experience__draft-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.work-experience__cancel,
+.work-experience__save {
+  min-height: 2.75rem;
+  border-radius: 0.7rem;
+  padding: 0 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.work-experience__cancel {
+  border: 1px solid var(--color-outline-variant);
+  background: #ffffff;
+  color: var(--color-on-surface-variant);
+}
+
+.work-experience__save {
+  border: 1px solid #1a56db;
+  background: linear-gradient(180deg, #1a56db 0%, #174fc8 100%);
+  color: #ffffff;
+}
+
 @media (max-width: 720px) {
   .work-experience__grid {
     grid-template-columns: 1fr;
@@ -91,5 +135,9 @@
   .work-experience__dates {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .work-experience__draft-actions {
+    flex-direction: column-reverse;
   }
 }
