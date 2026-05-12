@@ -1,18 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { AuthBrand } from "@/components/ui/AuthBrand";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { Input } from "@/components/ui/Input";
+import { setUser } from "@/store/auth-slice";
+import { useAppDispatch } from "@/store";
 import { useSignIn } from "./hooks/useSignIn";
 import styles from "./SignInModule.module.scss";
 import type { SignInFormValues } from "./types/sign-in.types";
 
 export function SignInModule() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const dispatch = useAppDispatch();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [formValues, setFormValues] = useState<SignInFormValues>({
     email: "",
@@ -32,8 +36,9 @@ export function SignInModule() {
     const response = await submit(formValues);
 
     if (response) {
+      dispatch(setUser(response.user));
       window.setTimeout(() => {
-        router.push("/dashboard");
+        router.push(searchParams.get("redirect") || "/dashboard");
       }, 300);
     }
   }

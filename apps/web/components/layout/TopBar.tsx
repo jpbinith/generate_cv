@@ -6,6 +6,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useSignOut } from "@/modules/auth/hooks/useSignOut";
+import { clearUser } from "@/store/auth-slice";
+import { useAppDispatch } from "@/store";
 import styles from "./TopBar.module.scss";
 
 interface TopBarProps {
@@ -18,6 +20,7 @@ export function TopBar({
   searchPlaceholder = "Search data...",
 }: TopBarProps) {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { errorMessage, isSubmitting, submit } = useSignOut();
 
@@ -25,6 +28,7 @@ export function TopBar({
     const didSignOut = await submit();
 
     if (didSignOut) {
+      dispatch(clearUser());
       setIsMenuOpen(false);
       router.push("/");
     }
