@@ -1,1 +1,0 @@
-export { MasterProfileModule } from "./MasterProfileModule";
