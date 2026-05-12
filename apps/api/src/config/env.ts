@@ -26,14 +26,34 @@ function readNumberEnvValue(name: string): number {
   return parsedValue;
 }
 
+function readBooleanEnvValue(name: string): boolean {
+  const value = requireEnvValue(name).toLowerCase();
+
+  if (value === "true") {
+    return true;
+  }
+
+  if (value === "false") {
+    return false;
+  }
+
+  throw new Error(`Environment variable ${name} must be either true or false.`);
+}
+
 export const env = {
+  accessTokenSecret: requireEnvValue("ACCESS_TOKEN_SECRET"),
+  accessTokenTtlMinutes: readNumberEnvValue("ACCESS_TOKEN_TTL_MINUTES"),
   apiPort: readNumberEnvValue("API_PORT"),
+  cookieSecure: readBooleanEnvValue("COOKIE_SECURE"),
   mongodbDatabase: requireEnvValue("MONGODB_DATABASE"),
   mongodbHost: requireEnvValue("MONGODB_HOST"),
   mongodbPassword: requireEnvValue("MONGODB_PASSWORD"),
   mongodbPort: readNumberEnvValue("MONGODB_PORT"),
   mongodbUri: process.env.MONGODB_URI,
   mongodbUsername: requireEnvValue("MONGODB_USERNAME"),
+  refreshTokenSecret: requireEnvValue("REFRESH_TOKEN_SECRET"),
+  refreshTokenTtlDays: readNumberEnvValue("REFRESH_TOKEN_TTL_DAYS"),
+  webAppOrigin: requireEnvValue("WEB_APP_ORIGIN"),
 };
 
 export function buildMongoConnectionUri(): string {

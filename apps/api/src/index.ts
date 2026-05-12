@@ -3,12 +3,13 @@ import cors from "cors";
 import { connectToDatabase, pingDatabase } from "./lib/database.js";
 import { env } from "./config/env.js";
 import { errorHandler } from "./middleware/error-handler.js";
+import { ensureRefreshTokenIndexes } from "./modules/auth/refresh-token.repository.js";
 import { authRouter } from "./modules/auth/auth.routes.js";
 import { ensureUserIndexes } from "./modules/users/user.repository.js";
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: env.webAppOrigin, credentials: true }));
 app.use(express.json({ limit: "10mb" }));
 app.use("/auth", authRouter);
 
@@ -26,6 +27,7 @@ app.use(errorHandler);
 async function startServer() {
   await connectToDatabase();
   await ensureUserIndexes();
+  await ensureRefreshTokenIndexes();
 
   app.listen(env.apiPort, () => {
     console.log(`API running on http://localhost:${env.apiPort}`);

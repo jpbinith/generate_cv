@@ -91,6 +91,15 @@ apps/web/
 * Avoid placing feature logic directly inside `app/page.tsx`.
 * `app/page.tsx` should mainly compose modules.
 
+## Frontend API Integration Rules
+
+* Do not call `fetch` directly inside components.
+* All API calls must go through `lib/http-client.ts`.
+* Feature-specific API calls must live in module `services/` folders.
+* Components should use hooks to call services.
+* Components should not know backend URLs.
+* API request and response types must be typed.
+
 ## Component Rules
 
 * Components must be small and reusable.

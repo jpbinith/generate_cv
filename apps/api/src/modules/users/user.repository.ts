@@ -1,4 +1,4 @@
-import type { Collection, OptionalId } from "mongodb";
+import { ObjectId, type Collection, type OptionalId } from "mongodb";
 import { getDatabase } from "../../lib/database.js";
 import type { User } from "./user.entity.js";
 
@@ -10,6 +10,14 @@ export function getUsersCollection(): Collection<User> {
 
 export async function findUserByEmail(email: string): Promise<User | null> {
   return getUsersCollection().findOne({ email: email.toLowerCase() });
+}
+
+export async function findUserById(userId: string): Promise<User | null> {
+  if (!ObjectId.isValid(userId)) {
+    return null;
+  }
+
+  return getUsersCollection().findOne({ _id: new ObjectId(userId) });
 }
 
 export async function insertUser(
