@@ -193,7 +193,12 @@ styles/
 
 * Keep API routes/controllers thin.
 * Put OpenAI logic in a dedicated service.
+* Backend module-specific types must live in `modules/<feature>/types/` files such as `auth.types.ts`.
 * Validate request bodies before processing.
+* Services must not use Express `req` or `res` objects directly.
+* Routes/controllers should send success responses only.
+* Use a global Express error handler for shared error responses and unexpected `500` failures.
+* Services may throw structured domain/service errors, and the global error handler should translate them into HTTP responses.
 * Return consistent JSON responses.
 * Never expose internal errors to the frontend.
 * Keep prompts separated from route handlers.

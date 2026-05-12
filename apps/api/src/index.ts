@@ -2,11 +2,15 @@ import express from "express";
 import cors from "cors";
 import { connectToDatabase, pingDatabase } from "./lib/database.js";
 import { env } from "./config/env.js";
+import { errorHandler } from "./middleware/error-handler.js";
+import { authRouter } from "./modules/auth/auth.routes.js";
+import { ensureUserIndexes } from "./modules/users/user.repository.js";
 
 const app = express();
 
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json({ limit: "10mb" }));
+app.use("/auth", authRouter);
 
 app.get("/health", async (_req, res) => {
   const databaseOk = await pingDatabase().catch(() => false);
@@ -17,8 +21,11 @@ app.get("/health", async (_req, res) => {
   });
 });
 
+app.use(errorHandler);
+
 async function startServer() {
   await connectToDatabase();
+  await ensureUserIndexes();
 
   app.listen(env.apiPort, () => {
     console.log(`API running on http://localhost:${env.apiPort}`);
