@@ -1,6 +1,7 @@
 "use client";
 
 import { Icon } from "@/components/ui/Icon";
+import { Input } from "@/components/ui/Input";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -33,10 +34,14 @@ export function TopBar({ title }: TopBarProps) {
       </div>
 
       <div className={styles["top-bar__actions"]}>
-        <label className={styles["top-bar__search"]}>
-          <Icon className={styles["top-bar__search-icon"]} name="search" />
-          <input placeholder="Search data..." type="text" />
-        </label>
+        <Input
+          placeholder="Search data..."
+          startAdornment={
+            <Icon className={styles["top-bar__search-icon"]} name="search" />
+          }
+          type="text"
+          wrapperClassName={styles["top-bar__search"]}
+        />
 
         <button className={styles["top-bar__icon-button"]} type="button">
           <Icon name="notifications" />

@@ -6,6 +6,7 @@ import { useState } from "react";
 import { AuthBrand } from "@/components/ui/AuthBrand";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
+import { Input } from "@/components/ui/Input";
 import { useSignUp } from "./hooks/useSignUp";
 import styles from "./SignUpModule.module.scss";
 import type { SignUpFormValues } from "./types/sign-up.types";
@@ -76,8 +77,8 @@ export function SignUpModule() {
             <form className={styles["sign-up__form"]} onSubmit={handleSubmit}>
               <label className={styles["sign-up__field"]}>
                 <span className={styles["sign-up__label"]}>Full Name</span>
-                <input
-                  className={styles["sign-up__input"]}
+                <Input
+                  aria-invalid={Boolean(fieldErrors.name)}
                   name="name"
                   placeholder="John Doe"
                   type="text"
@@ -93,8 +94,8 @@ export function SignUpModule() {
 
               <label className={styles["sign-up__field"]}>
                 <span className={styles["sign-up__label"]}>Email Address</span>
-                <input
-                  className={styles["sign-up__input"]}
+                <Input
+                  aria-invalid={Boolean(fieldErrors.email)}
                   name="email"
                   placeholder="john@example.com"
                   type="email"
@@ -113,27 +114,29 @@ export function SignUpModule() {
                   <span className={styles["sign-up__label"]}>Password</span>
                 </div>
 
-                <div className={styles["sign-up__password-wrap"]}>
-                  <input
-                    className={styles["sign-up__input"]}
-                    name="password"
-                    placeholder="••••••••"
-                    type={isPasswordVisible ? "text" : "password"}
-                    value={formValues.password}
-                    onChange={(event) =>
-                      handleChange("password", event.target.value)
-                    }
-                  />
-                  <button
-                    className={styles["sign-up__visibility-toggle"]}
-                    type="button"
-                    onClick={() =>
-                      setIsPasswordVisible((currentValue) => !currentValue)
-                    }
-                  >
-                    <Icon name={isPasswordVisible ? "visibility_off" : "visibility"} />
-                  </button>
-                </div>
+                <Input
+                  aria-invalid={Boolean(fieldErrors.password)}
+                  endAdornment={
+                    <button
+                      className={styles["sign-up__visibility-toggle"]}
+                      type="button"
+                      onClick={() =>
+                        setIsPasswordVisible((currentValue) => !currentValue)
+                      }
+                    >
+                      <Icon
+                        name={isPasswordVisible ? "visibility_off" : "visibility"}
+                      />
+                    </button>
+                  }
+                  name="password"
+                  placeholder="••••••••"
+                  type={isPasswordVisible ? "text" : "password"}
+                  value={formValues.password}
+                  onChange={(event) =>
+                    handleChange("password", event.target.value)
+                  }
+                />
 
                 <p className={styles["sign-up__helper"]}>
                   Must be at least 8 characters with a mix of letters and

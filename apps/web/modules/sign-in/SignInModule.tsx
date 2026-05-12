@@ -6,6 +6,7 @@ import { useState } from "react";
 import { AuthBrand } from "@/components/ui/AuthBrand";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
+import { Input } from "@/components/ui/Input";
 import { useSignIn } from "./hooks/useSignIn";
 import styles from "./SignInModule.module.scss";
 import type { SignInFormValues } from "./types/sign-in.types";
@@ -67,8 +68,8 @@ export function SignInModule() {
             <form className={styles["sign-in__form"]} onSubmit={handleSubmit}>
               <label className={styles["sign-in__field"]}>
                 <span className={styles["sign-in__label"]}>Email Address</span>
-                <input
-                  className={styles["sign-in__input"]}
+                <Input
+                  aria-invalid={Boolean(fieldErrors.email)}
                   name="email"
                   placeholder="john@example.com"
                   type="email"
@@ -93,27 +94,29 @@ export function SignInModule() {
                   </button>
                 </div>
 
-                <div className={styles["sign-in__password-wrap"]}>
-                  <input
-                    className={styles["sign-in__input"]}
-                    name="password"
-                    placeholder="••••••••"
-                    type={isPasswordVisible ? "text" : "password"}
-                    value={formValues.password}
-                    onChange={(event) =>
-                      handleChange("password", event.target.value)
-                    }
-                  />
-                  <button
-                    className={styles["sign-in__visibility-toggle"]}
-                    type="button"
-                    onClick={() =>
-                      setIsPasswordVisible((currentValue) => !currentValue)
-                    }
-                  >
-                    <Icon name={isPasswordVisible ? "visibility_off" : "visibility"} />
-                  </button>
-                </div>
+                <Input
+                  aria-invalid={Boolean(fieldErrors.password)}
+                  endAdornment={
+                    <button
+                      className={styles["sign-in__visibility-toggle"]}
+                      type="button"
+                      onClick={() =>
+                        setIsPasswordVisible((currentValue) => !currentValue)
+                      }
+                    >
+                      <Icon
+                        name={isPasswordVisible ? "visibility_off" : "visibility"}
+                      />
+                    </button>
+                  }
+                  name="password"
+                  placeholder="••••••••"
+                  type={isPasswordVisible ? "text" : "password"}
+                  value={formValues.password}
+                  onChange={(event) =>
+                    handleChange("password", event.target.value)
+                  }
+                />
                 {fieldErrors.password ? (
                   <p className={styles["sign-in__field-error"]}>
                     {fieldErrors.password}
