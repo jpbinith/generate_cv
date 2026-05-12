@@ -1,10 +1,8 @@
+import { HttpClientError, post } from "@/lib/http-client";
 import type {
-  SignUpErrorResponse,
   SignUpFormValues,
   SignUpSuccessResponse,
 } from "../types/sign-up.types";
-
-const DEFAULT_API_BASE_URL = "http://localhost:4000";
 
 export class SignUpRequestError extends Error {
   readonly fieldErrors: Record<string, string>;
@@ -18,30 +16,20 @@ export class SignUpRequestError extends Error {
 export async function signUp(
   values: SignUpFormValues,
 ): Promise<SignUpSuccessResponse> {
-  const response = await fetch(`${getApiBaseUrl()}/auth/sign-up`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(values),
-  });
+  try {
+    return await post<SignUpSuccessResponse>("/auth/sign-up", {
+      body: values,
+    });
+  } catch (error: unknown) {
+    if (error instanceof HttpClientError) {
+      throw new SignUpRequestError(
+        error.message,
+        toFieldErrors(error.issues),
+      );
+    }
 
-  if (response.ok) {
-    return (await response.json()) as SignUpSuccessResponse;
+    throw error;
   }
-
-  const errorResponse = (await safeParseJson(
-    response,
-  )) as SignUpErrorResponse | null;
-
-  throw new SignUpRequestError(
-    errorResponse?.error ?? "Unable to create account right now.",
-    toFieldErrors(errorResponse?.issues ?? []),
-  );
-}
-
-function getApiBaseUrl(): string {
-  return process.env.NEXT_PUBLIC_API_BASE_URL ?? DEFAULT_API_BASE_URL;
 }
 
 function toFieldErrors(
@@ -51,12 +39,4 @@ function toFieldErrors(
     errors[issue.field] = issue.message;
     return errors;
   }, {});
-}
-
-async function safeParseJson(response: Response): Promise<unknown> {
-  try {
-    return await response.json();
-  } catch {
-    return null;
-  }
 }

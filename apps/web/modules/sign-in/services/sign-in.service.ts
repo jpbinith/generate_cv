@@ -1,10 +1,8 @@
+import { HttpClientError, post } from "@/lib/http-client";
 import type {
-  SignInErrorResponse,
   SignInFormValues,
   SignInSuccessResponse,
 } from "../types/sign-in.types";
-
-const DEFAULT_API_BASE_URL = "http://localhost:4000";
 
 export class SignInRequestError extends Error {
   readonly fieldErrors: Record<string, string>;
@@ -18,31 +16,21 @@ export class SignInRequestError extends Error {
 export async function signIn(
   values: SignInFormValues,
 ): Promise<SignInSuccessResponse> {
-  const response = await fetch(`${getApiBaseUrl()}/auth/sign-in`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify(values),
-  });
+  try {
+    return await post<SignInSuccessResponse>("/auth/sign-in", {
+      body: values,
+      credentials: "include",
+    });
+  } catch (error: unknown) {
+    if (error instanceof HttpClientError) {
+      throw new SignInRequestError(
+        error.message,
+        toFieldErrors(error.issues),
+      );
+    }
 
-  if (response.ok) {
-    return (await response.json()) as SignInSuccessResponse;
+    throw error;
   }
-
-  const errorResponse = (await safeParseJson(
-    response,
-  )) as SignInErrorResponse | null;
-
-  throw new SignInRequestError(
-    errorResponse?.error ?? "Unable to sign in right now.",
-    toFieldErrors(errorResponse?.issues ?? []),
-  );
-}
-
-function getApiBaseUrl(): string {
-  return process.env.NEXT_PUBLIC_API_BASE_URL ?? DEFAULT_API_BASE_URL;
 }
 
 function toFieldErrors(
@@ -52,12 +40,4 @@ function toFieldErrors(
     errors[issue.field] = issue.message;
     return errors;
   }, {});
-}
-
-async function safeParseJson(response: Response): Promise<unknown> {
-  try {
-    return await response.json();
-  } catch {
-    return null;
-  }
 }

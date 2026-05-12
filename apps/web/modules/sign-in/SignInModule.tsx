@@ -3,44 +3,28 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Icon } from "@/components/ui/Icon";
-import {
-  signIn,
-  SignInRequestError,
-} from "./services/sign-in.service";
+import { useSignIn } from "./hooks/useSignIn";
 import styles from "./SignInModule.module.scss";
 import type { SignInFormValues } from "./types/sign-in.types";
 
 export function SignInModule() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [serverError, setServerError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [formValues, setFormValues] = useState<SignInFormValues>({
     email: "",
     password: "",
   });
+  const {
+    clearFieldError,
+    fieldErrors,
+    isSubmitting,
+    serverError,
+    submit,
+    successMessage,
+  } = useSignIn();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setIsSubmitting(true);
-    setServerError("");
-    setSuccessMessage("");
-    setFieldErrors({});
-
-    try {
-      const response = await signIn(formValues);
-      setSuccessMessage(response.message);
-    } catch (error: unknown) {
-      if (error instanceof SignInRequestError) {
-        setServerError(error.message);
-        setFieldErrors(error.fieldErrors);
-      } else {
-        setServerError("Unable to sign in right now.");
-      }
-    } finally {
-      setIsSubmitting(false);
-    }
+    await submit(formValues);
   }
 
   function handleChange(field: keyof SignInFormValues, value: string) {
@@ -48,16 +32,7 @@ export function SignInModule() {
       ...currentValues,
       [field]: value,
     }));
-
-    setFieldErrors((currentErrors) => {
-      if (!(field in currentErrors)) {
-        return currentErrors;
-      }
-
-      const nextErrors = { ...currentErrors };
-      delete nextErrors[field];
-      return nextErrors;
-    });
+    clearFieldError(field);
   }
 
   return (

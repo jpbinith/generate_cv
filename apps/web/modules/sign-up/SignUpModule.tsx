@@ -4,36 +4,32 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Icon } from "@/components/ui/Icon";
-import {
-  SignUpRequestError,
-  signUp,
-} from "./services/sign-up.service";
+import { useSignUp } from "./hooks/useSignUp";
 import styles from "./SignUpModule.module.scss";
 import type { SignUpFormValues } from "./types/sign-up.types";
 
 export function SignUpModule() {
   const router = useRouter();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [serverError, setServerError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [formValues, setFormValues] = useState<SignUpFormValues>({
     name: "",
     email: "",
     password: "",
   });
+  const {
+    clearFieldError,
+    fieldErrors,
+    isSubmitting,
+    serverError,
+    submit,
+    successMessage,
+  } = useSignUp();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setIsSubmitting(true);
-    setServerError("");
-    setSuccessMessage("");
-    setFieldErrors({});
+    const response = await submit(formValues);
 
-    try {
-      const response = await signUp(formValues);
-      setSuccessMessage(response.message);
+    if (response) {
       setFormValues({
         name: "",
         email: "",
@@ -42,15 +38,6 @@ export function SignUpModule() {
       window.setTimeout(() => {
         router.push("/");
       }, 1200);
-    } catch (error: unknown) {
-      if (error instanceof SignUpRequestError) {
-        setServerError(error.message);
-        setFieldErrors(error.fieldErrors);
-      } else {
-        setServerError("Unable to create account right now.");
-      }
-    } finally {
-      setIsSubmitting(false);
     }
   }
 
@@ -62,16 +49,7 @@ export function SignUpModule() {
       ...currentValues,
       [field]: value,
     }));
-
-    setFieldErrors((currentErrors) => {
-      if (!(field in currentErrors)) {
-        return currentErrors;
-      }
-
-      const nextErrors = { ...currentErrors };
-      delete nextErrors[field];
-      return nextErrors;
-    });
+    clearFieldError(field);
   }
 
   return (
