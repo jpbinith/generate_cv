@@ -1,0 +1,66 @@
+.job-description {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.job-description__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.job-description__title {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.job-description__input {
+  min-height: 16rem;
+  width: 100%;
+  resize: none;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-container);
+  padding: var(--space-4);
+  color: var(--color-on-surface);
+  font: inherit;
+  line-height: 1.6;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.job-description__input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.job-description__keywords {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.job-description__label {
+  margin: 0;
+  color: var(--color-on-surface-variant);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.job-description__tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+@media (max-width: 768px) {
+  .job-description__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

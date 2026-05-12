@@ -110,6 +110,10 @@ Pages should remain thin and declarative.
 
 Feature implementation logic must remain inside modules.
 
+Page-level screen composition may live in `app/<route>/page.tsx` when it is limited to assembling existing feature components and shared UI.
+
+Do not create module wrapper components whose only job is to compose a single route screen that can be composed directly in the page.
+
 ## Frontend API Integration Rules
 
 * Do not call `fetch` directly inside components.

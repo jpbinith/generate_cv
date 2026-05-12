@@ -1,8 +1,4 @@
-export interface NavigationItem {
-  label: string;
-  icon: string;
-  active?: boolean;
-}
+import type { NavigationItem } from "@/components/layout/layout.types";
 
 export interface ProgressOverview {
   completionPercentage: number;

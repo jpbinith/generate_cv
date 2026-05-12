@@ -33,7 +33,7 @@ export function SignInModule() {
 
     if (response) {
       window.setTimeout(() => {
-        router.push("/master-profile");
+        router.push("/dashboard");
       }, 300);
     }
   }

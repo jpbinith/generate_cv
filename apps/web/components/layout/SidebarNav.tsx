@@ -1,6 +1,7 @@
+import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import type { NavigationItem } from "@/modules/master-profile/types/master-profile.types";
+import type { NavigationItem } from "./layout.types";
 import styles from "./SidebarNav.module.scss";
 
 interface SidebarNavProps {
@@ -44,17 +45,17 @@ export function SidebarNav({
 
       <nav className={styles["sidebar-nav__links"]}>
         {items.map((item) => (
-          <a
+          <Link
             key={item.label}
             className={`${styles["sidebar-nav__link"]} ${
               item.active ? styles["sidebar-nav__link--active"] : ""
             }`}
-            href="#"
+            href={item.href}
             title={collapsed ? item.label : undefined}
           >
             <Icon name={item.icon} />
             <span className={styles["sidebar-nav__label"]}>{item.label}</span>
-          </a>
+          </Link>
         ))}
       </nav>
 

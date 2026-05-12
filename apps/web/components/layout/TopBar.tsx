@@ -10,9 +10,13 @@ import styles from "./TopBar.module.scss";
 
 interface TopBarProps {
   title: string;
+  searchPlaceholder?: string;
 }
 
-export function TopBar({ title }: TopBarProps) {
+export function TopBar({
+  title,
+  searchPlaceholder = "Search data...",
+}: TopBarProps) {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { errorMessage, isSubmitting, submit } = useSignOut();
@@ -35,7 +39,7 @@ export function TopBar({ title }: TopBarProps) {
 
       <div className={styles["top-bar__actions"]}>
         <Input
-          placeholder="Search data..."
+          placeholder={searchPlaceholder}
           startAdornment={
             <Icon className={styles["top-bar__search-icon"]} name="search" />
           }

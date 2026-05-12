@@ -3,10 +3,15 @@ import type { MasterProfileViewModel } from "../types/master-profile.types";
 export function getMasterProfileViewModel(): MasterProfileViewModel {
   return {
     navigationItems: [
-      { label: "Dashboard", icon: "dashboard" },
-      { label: "Master Profile", icon: "account_circle", active: true },
-      { label: "CV History", icon: "history" },
-      { label: "Templates", icon: "description" },
+      { href: "/dashboard", label: "Dashboard", icon: "dashboard" },
+      {
+        href: "/master-profile",
+        label: "Master Profile",
+        icon: "account_circle",
+        active: true,
+      },
+      { href: "#", label: "CV History", icon: "history" },
+      { href: "#", label: "Templates", icon: "description" },
     ],
     topBarTitle: "Master Profile",
     progressOverview: {
