@@ -4,7 +4,7 @@ import { useState } from "react";
 import { AppShell } from "@/components/layout/AppShell";
 import { SidebarNav } from "@/components/layout/SidebarNav";
 import { TopBar } from "@/components/layout/TopBar";
-import { getCvGeneratorViewModel } from "./services/cvGeneratorMockService";
+import { getMasterProfileViewModel } from "./services/masterProfileMockService";
 import { EducationSection } from "./components/EducationSection";
 import { PersonalInformationSection } from "./components/PersonalInformationSection";
 import { ProfessionalSummarySection } from "./components/ProfessionalSummarySection";
@@ -12,10 +12,10 @@ import { ProgressOverview } from "./components/ProgressOverview";
 import { SkillsSection } from "./components/SkillsSection";
 import { StickySaveBar } from "./components/StickySaveBar";
 import { WorkExperienceSection } from "./components/WorkExperienceSection";
-import styles from "./CvGeneratorModule.module.scss";
+import styles from "./MasterProfileModule.module.scss";
 
-export function CvGeneratorModule() {
-  const viewModel = getCvGeneratorViewModel();
+export function MasterProfileModule() {
+  const viewModel = getMasterProfileViewModel();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   return (
@@ -32,9 +32,9 @@ export function CvGeneratorModule() {
       }
       topbar={<TopBar title={viewModel.topBarTitle} />}
     >
-      <div className={styles["cv-generator"]}>
+      <div className={styles["master-profile"]}>
         <ProgressOverview data={viewModel.progressOverview} />
-        <div className={styles["cv-generator__form-stack"]}>
+        <div className={styles["master-profile__form-stack"]}>
           <PersonalInformationSection
             emailHelperText={viewModel.emailHelperText}
             personalInfo={viewModel.personalInfo}

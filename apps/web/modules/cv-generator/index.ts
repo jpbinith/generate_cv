@@ -1,1 +1,0 @@
-export { CvGeneratorModule } from "./CvGeneratorModule";

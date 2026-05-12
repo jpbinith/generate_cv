@@ -40,7 +40,7 @@ export interface SkillGroup {
   addLabel: string;
 }
 
-export interface CvGeneratorViewModel {
+export interface MasterProfileViewModel {
   navigationItems: NavigationItem[];
   topBarTitle: string;
   progressOverview: ProgressOverview;

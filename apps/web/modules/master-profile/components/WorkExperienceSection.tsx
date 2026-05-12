@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { SectionCard } from "./SectionCard";
-import type { WorkExperienceItem } from "../types/cv-generator.types";
+import type { WorkExperienceItem } from "../types/master-profile.types";
 import styles from "./WorkExperienceSection.module.scss";
 
 interface WorkExperienceSectionProps {

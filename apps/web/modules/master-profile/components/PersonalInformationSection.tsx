@@ -1,6 +1,6 @@
 import { Icon } from "@/components/ui/Icon";
 import { SectionCard } from "./SectionCard";
-import type { PersonalInfo } from "../types/cv-generator.types";
+import type { PersonalInfo } from "../types/master-profile.types";
 import styles from "./PersonalInformationSection.module.scss";
 
 interface PersonalInformationSectionProps {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { SectionCard } from "./SectionCard";
-import type { EducationItem } from "../types/cv-generator.types";
+import type { EducationItem } from "../types/master-profile.types";
 import styles from "./EducationSection.module.scss";
 
 interface EducationSectionProps {

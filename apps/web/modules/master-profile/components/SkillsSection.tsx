@@ -1,6 +1,6 @@
 import { Icon } from "@/components/ui/Icon";
 import { SectionCard } from "./SectionCard";
-import type { SkillGroup } from "../types/cv-generator.types";
+import type { SkillGroup } from "../types/master-profile.types";
 import styles from "./SkillsSection.module.scss";
 
 interface SkillsSectionProps {

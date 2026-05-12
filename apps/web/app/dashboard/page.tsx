@@ -1,5 +1,5 @@
-import { CvGeneratorModule } from "@/modules/cv-generator";
+import { redirect } from "next/navigation";
 
 export default function DashboardPage() {
-  return <CvGeneratorModule />;
+  redirect("/master-profile");
 }

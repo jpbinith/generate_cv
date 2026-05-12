@@ -30,7 +30,7 @@ export function SignInModule() {
 
     if (response) {
       window.setTimeout(() => {
-        router.push("/dashboard");
+        router.push("/master-profile");
       }, 300);
     }
   }

@@ -1,18 +1,18 @@
-.cv-generator {
+.master-profile {
   width: min(100%, 80rem);
   max-width: 90rem;
   margin: 0 auto;
   padding-bottom: 8rem;
 }
 
-.cv-generator__form-stack {
+.master-profile__form-stack {
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
 }
 
 @media (max-width: 1024px) {
-  .cv-generator {
+  .master-profile {
     width: 100%;
     padding-bottom: 1rem;
   }

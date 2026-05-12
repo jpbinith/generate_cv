@@ -1,6 +1,6 @@
-import type { CvGeneratorViewModel } from "../types/cv-generator.types";
+import type { MasterProfileViewModel } from "../types/master-profile.types";
 
-export function getCvGeneratorViewModel(): CvGeneratorViewModel {
+export function getMasterProfileViewModel(): MasterProfileViewModel {
   return {
     navigationItems: [
       { label: "Dashboard", icon: "dashboard" },

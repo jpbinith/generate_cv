@@ -1,4 +1,4 @@
-import type { ProgressOverview as ProgressOverviewData } from "../types/cv-generator.types";
+import type { ProgressOverview as ProgressOverviewData } from "../types/master-profile.types";
 import styles from "./ProgressOverview.module.scss";
 
 interface ProgressOverviewProps {

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import type { NavigationItem } from "@/modules/cv-generator/types/cv-generator.types";
+import type { NavigationItem } from "@/modules/master-profile/types/master-profile.types";
 import styles from "./SidebarNav.module.scss";
 
 interface SidebarNavProps {
