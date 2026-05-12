@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { useSignIn } from "./hooks/useSignIn";
@@ -8,6 +9,7 @@ import styles from "./SignInModule.module.scss";
 import type { SignInFormValues } from "./types/sign-in.types";
 
 export function SignInModule() {
+  const router = useRouter();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [formValues, setFormValues] = useState<SignInFormValues>({
     email: "",
@@ -24,7 +26,13 @@ export function SignInModule() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await submit(formValues);
+    const response = await submit(formValues);
+
+    if (response) {
+      window.setTimeout(() => {
+        router.push("/dashboard");
+      }, 300);
+    }
   }
 
   function handleChange(field: keyof SignInFormValues, value: string) {

@@ -1,5 +1,10 @@
+"use client";
+
 import { Icon } from "@/components/ui/Icon";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useSignOut } from "@/modules/auth/hooks/useSignOut";
 import styles from "./TopBar.module.scss";
 
 interface TopBarProps {
@@ -7,6 +12,19 @@ interface TopBarProps {
 }
 
 export function TopBar({ title }: TopBarProps) {
+  const router = useRouter();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { errorMessage, isSubmitting, submit } = useSignOut();
+
+  async function handleSignOut() {
+    const didSignOut = await submit();
+
+    if (didSignOut) {
+      setIsMenuOpen(false);
+      router.push("/");
+    }
+  }
+
   return (
     <div className={styles["top-bar"]}>
       <div className={styles["top-bar__heading"]}>
@@ -28,13 +46,43 @@ export function TopBar({ title }: TopBarProps) {
           <Icon name="settings" />
         </button>
 
-        <Image
-          alt="User profile"
-          className={styles["top-bar__avatar"]}
-          height={40}
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7sGv-j1FzqgxOSBty-8ZAJ2qIywEb7GzpOcAQvWrnMMAkPxrcgtYV85A-7nyVd_gfxgHHvYUfGEcysVyhkJ178mXl2d1LLrN6AcwxzXm09oMGKwGXxgWv09VNBPTaKKlVHJrYbQp_t7p4oroWjghtauIPANXrxrgH-enCuT3WrLP2FWceesRpIB3tLZDQ4CPm6m2kvYrHBa-_AOHuZgMJEkfXc1cFopCmZp1w5AOtyo8EfK4IZvtMJfSLkad0aXL1OsvWlLoKKx9a"
-          width={40}
-        />
+        <div className={styles["top-bar__profile"]}>
+          <button
+            aria-expanded={isMenuOpen}
+            aria-haspopup="menu"
+            className={styles["top-bar__avatar-button"]}
+            onClick={() => setIsMenuOpen((currentValue) => !currentValue)}
+            type="button"
+          >
+            <Image
+              alt="User profile"
+              className={styles["top-bar__avatar"]}
+              height={40}
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7sGv-j1FzqgxOSBty-8ZAJ2qIywEb7GzpOcAQvWrnMMAkPxrcgtYV85A-7nyVd_gfxgHHvYUfGEcysVyhkJ178mXl2d1LLrN6AcwxzXm09oMGKwGXxgWv09VNBPTaKKlVHJrYbQp_t7p4oroWjghtauIPANXrxrgH-enCuT3WrLP2FWceesRpIB3tLZDQ4CPm6m2kvYrHBa-_AOHuZgMJEkfXc1cFopCmZp1w5AOtyo8EfK4IZvtMJfSLkad0aXL1OsvWlLoKKx9a"
+              width={40}
+            />
+          </button>
+
+          {isMenuOpen ? (
+            <div className={styles["top-bar__dropdown"]} role="menu">
+              <button
+                className={styles["top-bar__dropdown-item"]}
+                disabled={isSubmitting}
+                onClick={handleSignOut}
+                type="button"
+              >
+                <Icon name="logout" />
+                <span>{isSubmitting ? "Signing Out..." : "Sign Out"}</span>
+              </button>
+
+              {errorMessage ? (
+                <p className={styles["top-bar__dropdown-error"]}>
+                  {errorMessage}
+                </p>
+              ) : null}
+            </div>
+          ) : null}
+        </div>
       </div>
     </div>
   );
