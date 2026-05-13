@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/Button";
+import { Icon } from "@/components/ui/Icon";
 import { JobDescriptionPanel } from "@/modules/dashboard/components/JobDescriptionPanel";
 import { LivePreviewPanel } from "@/modules/dashboard/components/LivePreviewPanel";
 import { ProfileSelectionPanel } from "@/modules/dashboard/components/ProfileSelectionPanel";
@@ -18,10 +20,23 @@ export default function DashboardPage() {
             extractedKeywords={viewModel.extractedKeywords}
             jobDescription={viewModel.jobDescription}
           />
-          <ProfileSelectionPanel
-            generationEstimate={viewModel.generationEstimate}
-            items={viewModel.profileSelections}
-          />
+          <ProfileSelectionPanel items={viewModel.profileSelections} />
+
+          <div className={styles["dashboard__generate-bar"]}>
+            <div className={styles["dashboard__generate-inner"]}>
+              <Button
+                fullWidth
+                icon={<Icon filled name="magic_button" />}
+                size="lg"
+              >
+                Generate Tailored CV
+              </Button>
+              <p className={styles["dashboard__generate-estimate"]}>
+                <Icon name="info" />
+                <span>{viewModel.generationEstimate}</span>
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className={styles["dashboard__preview-column"]}>
@@ -36,6 +51,7 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
     </div>
   );
 }

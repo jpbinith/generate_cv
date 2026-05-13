@@ -1,18 +1,13 @@
-import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
 import { SurfaceCard } from "@/components/ui/SurfaceCard";
 import styles from "./ProfileSelectionPanel.module.scss";
 import type { SelectionItem } from "../types/dashboard.types";
 
 interface ProfileSelectionPanelProps {
-  generationEstimate: string;
   items: SelectionItem[];
 }
 
-export function ProfileSelectionPanel({
-  generationEstimate,
-  items,
-}: ProfileSelectionPanelProps) {
+export function ProfileSelectionPanel({ items }: ProfileSelectionPanelProps) {
   return (
     <SurfaceCard>
       <div className={styles["profile-selection"]}>
@@ -57,20 +52,6 @@ export function ProfileSelectionPanel({
               ) : null}
             </article>
           ))}
-        </div>
-
-        <div className={styles["profile-selection__footer"]}>
-          <Button
-            fullWidth
-            icon={<Icon filled name="magic_button" />}
-            size="lg"
-          >
-            Generate Tailored CV
-          </Button>
-          <p className={styles["profile-selection__estimate"]}>
-            <Icon name="info" />
-            <span>{generationEstimate}</span>
-          </p>
         </div>
       </div>
     </SurfaceCard>
