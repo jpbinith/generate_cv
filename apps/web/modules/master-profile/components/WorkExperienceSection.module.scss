@@ -31,6 +31,17 @@
   padding: 1rem;
 }
 
+.work-experience__display-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.7rem;
+  background: #ffffff;
+  padding: 1rem;
+}
+
 .work-experience__item--draft {
   border-color: #9db7ff;
   background: #f9fbff;
@@ -48,9 +59,6 @@
 }
 
 .work-experience__toolbar {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
   display: flex;
   gap: var(--space-2);
 }
@@ -116,6 +124,30 @@
   margin-top: var(--space-3);
   color: var(--color-on-surface-variant);
   font-size: 0.9rem;
+}
+
+.work-experience__content {
+  flex: 1;
+}
+
+.work-experience__company {
+  margin: 0 0 0.35rem;
+  font-weight: 700;
+}
+
+.work-experience__meta {
+  margin: 0;
+  color: var(--color-on-surface-variant);
+}
+
+.work-experience__achievement-list {
+  margin: 0.75rem 0 0;
+  padding-left: 1.2rem;
+  color: var(--color-on-surface);
+}
+
+.work-experience__achievement-list li + li {
+  margin-top: 0.35rem;
 }
 
 .work-experience__achievements textarea {

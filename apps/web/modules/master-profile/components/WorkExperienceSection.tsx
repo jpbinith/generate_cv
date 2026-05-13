@@ -26,6 +26,9 @@ export function WorkExperienceSection({
 }: WorkExperienceSectionProps) {
   const [draftExperience, setDraftExperience] =
     useState<WorkExperienceItem | null>(null);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [editingExperience, setEditingExperience] =
+    useState<WorkExperienceItem | null>(null);
 
   function updateDraftExperience(
     field: keyof Omit<WorkExperienceItem, "achievements">,
@@ -95,47 +98,105 @@ export function WorkExperienceSection({
     setDraftExperience(null);
   }
 
-  function updateExistingExperience(
-    index: number,
+  function startEditingExperience(index: number) {
+    setEditingIndex(index);
+    setEditingExperience({
+      ...items[index],
+      achievements: [...items[index].achievements],
+    });
+  }
+
+  function updateEditingExperience(
     field: keyof Omit<WorkExperienceItem, "achievements">,
     value: string,
   ) {
-    onChange(
-      items.map((item, itemIndex) =>
-        itemIndex === index ? { ...item, [field]: value } : item,
-      ),
+    setEditingExperience((currentValue) =>
+      currentValue ? { ...currentValue, [field]: value } : currentValue,
     );
   }
 
-  function toggleExistingPresent(index: number, isPresent: boolean) {
-    onChange(
-      items.map((item, itemIndex) =>
-        itemIndex === index
-          ? {
-              ...item,
-              isPresent,
-              endDate: isPresent ? "" : item.endDate,
-            }
-          : item,
-      ),
+  function toggleEditingPresent(isPresent: boolean) {
+    setEditingExperience((currentValue) =>
+      currentValue
+        ? {
+            ...currentValue,
+            isPresent,
+            endDate: isPresent ? "" : currentValue.endDate,
+          }
+        : currentValue,
     );
   }
 
-  function updateExistingAchievements(index: number, value: string) {
-    const achievements = value
+  function updateEditingAchievements(value: string) {
+    const achievementLines = value
       .split("\n")
-      .map((entry) => entry.replace(/^•\s*/, "").trim())
-      .filter(Boolean);
+      .map((entry) => entry.replace(/^•\s*/, "").trim());
 
-    onChange(
-      items.map((item, itemIndex) =>
-        itemIndex === index ? { ...item, achievements } : item,
-      ),
+    setEditingExperience((currentValue) =>
+      currentValue
+        ? {
+            ...currentValue,
+            achievements: achievementLines.length > 0 ? achievementLines : [""],
+          }
+        : currentValue,
     );
   }
 
   function removeExperience(index: number) {
     onChange(items.filter((_, itemIndex) => itemIndex !== index));
+
+    if (editingIndex === index) {
+      setEditingIndex(null);
+      setEditingExperience(null);
+      return;
+    }
+
+    if (editingIndex !== null && editingIndex > index) {
+      setEditingIndex(editingIndex - 1);
+    }
+  }
+
+  function cancelEditingExperience() {
+    setEditingIndex(null);
+    setEditingExperience(null);
+  }
+
+  function saveEditingExperience() {
+    if (editingIndex === null || !editingExperience) {
+      return;
+    }
+
+    const normalizedExperience: WorkExperienceItem = {
+      ...editingExperience,
+      companyName: editingExperience.companyName.trim(),
+      roleTitle: editingExperience.roleTitle.trim(),
+      location: editingExperience.location.trim(),
+      startDate: editingExperience.startDate.trim(),
+      endDate: editingExperience.isPresent ? "" : editingExperience.endDate.trim(),
+      isPresent: editingExperience.isPresent,
+      achievements: editingExperience.achievements
+        .map((entry) => entry.trim())
+        .filter(Boolean),
+    };
+
+    if (
+      !normalizedExperience.companyName ||
+      !normalizedExperience.roleTitle ||
+      !normalizedExperience.location ||
+      !normalizedExperience.startDate ||
+      (!normalizedExperience.isPresent && !normalizedExperience.endDate)
+    ) {
+      return;
+    }
+
+    onChange(
+      items.map((item, itemIndex) =>
+        itemIndex === editingIndex ? normalizedExperience : item,
+      ),
+    );
+
+    setEditingIndex(null);
+    setEditingExperience(null);
   }
 
   return (
@@ -263,98 +324,141 @@ export function WorkExperienceSection({
           </article>
         ) : null}
 
-        {items.map((item, index) => (
-          <article
-            key={`${item.companyName}-${item.roleTitle}`}
-            className={styles["work-experience__item"]}
-          >
-            <div className={styles["work-experience__toolbar"]}>
-              <button type="button">
-                <Icon name="drag_indicator" />
-              </button>
-              <button onClick={() => removeExperience(index)} type="button">
-                <Icon name="delete" />
-              </button>
-            </div>
+        {items.map((item, index) =>
+          editingIndex === index && editingExperience ? (
+            <article
+              key={`${item.companyName}-${item.roleTitle}`}
+              className={`${styles["work-experience__item"]} ${styles["work-experience__item--draft"]}`}
+            >
+              <div className={styles["work-experience__draft-badge"]}>
+                Edit Experience
+              </div>
 
-            <div className={styles["work-experience__grid"]}>
-              <label className={styles["work-experience__field"]}>
-                <span>Company Name</span>
-                <input
-                  onChange={(event) =>
-                    updateExistingExperience(
-                      index,
-                      "companyName",
-                      event.target.value,
-                    )
-                  }
-                  type="text"
-                  value={item.companyName}
-                />
-              </label>
-              <label className={styles["work-experience__field"]}>
-                <span>Role / Title</span>
-                <input
-                  onChange={(event) =>
-                    updateExistingExperience(index, "roleTitle", event.target.value)
-                  }
-                  type="text"
-                  value={item.roleTitle}
-                />
-              </label>
-              <label className={styles["work-experience__field"]}>
-                <span>Location</span>
-                <input
-                  onChange={(event) =>
-                    updateExistingExperience(index, "location", event.target.value)
-                  }
-                  type="text"
-                  value={item.location}
-                />
-              </label>
-              <label className={styles["work-experience__field"]}>
-                <span>Dates</span>
-                <div className={styles["work-experience__dates"]}>
-                  <MonthInput
-                    onChange={(event) =>
-                      updateExistingExperience(index, "startDate", event.target.value)
-                    }
-                    value={item.startDate}
-                  />
-                  <span>—</span>
-                  <MonthInput
-                    disabled={item.isPresent}
-                    onChange={(event) =>
-                      updateExistingExperience(index, "endDate", event.target.value)
-                    }
-                    value={item.endDate}
-                  />
-                </div>
-                <label className={styles["work-experience__present-toggle"]}>
+              <div className={styles["work-experience__grid"]}>
+                <label className={styles["work-experience__field"]}>
+                  <span>Company Name</span>
                   <input
-                    checked={item.isPresent}
                     onChange={(event) =>
-                      toggleExistingPresent(index, event.target.checked)
+                      updateEditingExperience("companyName", event.target.value)
                     }
-                    type="checkbox"
+                    type="text"
+                    value={editingExperience.companyName}
                   />
-                  <span>Present</span>
                 </label>
-              </label>
-            </div>
+                <label className={styles["work-experience__field"]}>
+                  <span>Role / Title</span>
+                  <input
+                    onChange={(event) =>
+                      updateEditingExperience("roleTitle", event.target.value)
+                    }
+                    type="text"
+                    value={editingExperience.roleTitle}
+                  />
+                </label>
+                <label className={styles["work-experience__field"]}>
+                  <span>Location</span>
+                  <input
+                    onChange={(event) =>
+                      updateEditingExperience("location", event.target.value)
+                    }
+                    type="text"
+                    value={editingExperience.location}
+                  />
+                </label>
+                <label className={styles["work-experience__field"]}>
+                  <span>Dates</span>
+                  <div className={styles["work-experience__dates"]}>
+                    <MonthInput
+                      onChange={(event) =>
+                        updateEditingExperience("startDate", event.target.value)
+                      }
+                      value={editingExperience.startDate}
+                    />
+                    <span>—</span>
+                    <MonthInput
+                      disabled={editingExperience.isPresent}
+                      onChange={(event) =>
+                        updateEditingExperience("endDate", event.target.value)
+                      }
+                      value={editingExperience.endDate}
+                    />
+                  </div>
+                  <label className={styles["work-experience__present-toggle"]}>
+                    <input
+                      checked={editingExperience.isPresent}
+                      onChange={(event) => toggleEditingPresent(event.target.checked)}
+                      type="checkbox"
+                    />
+                    <span>Present</span>
+                  </label>
+                </label>
+              </div>
 
-            <label className={styles["work-experience__achievements"]}>
-              <span>Key Achievements</span>
-              <textarea
-                onChange={(event) =>
-                  updateExistingAchievements(index, event.target.value)
-                }
-                rows={4}
-                value={item.achievements.map((entry) => `• ${entry}`).join("\n")}
-              />
-            </label>
-          </article>
-        ))}
+              <label className={styles["work-experience__achievements"]}>
+                <span>Key Achievements</span>
+                <textarea
+                  onChange={(event) => updateEditingAchievements(event.target.value)}
+                  rows={4}
+                  value={editingExperience.achievements
+                    .filter((entry, itemIndex, entries) => entry || entries.length === 1)
+                    .map((entry) => (entry ? `• ${entry}` : ""))
+                    .join("\n")}
+                />
+              </label>
+
+              <div className={styles["work-experience__draft-actions"]}>
+                <button
+                  className={styles["work-experience__cancel"]}
+                  onClick={cancelEditingExperience}
+                  type="button"
+                >
+                  Cancel
+                </button>
+                <button
+                  className={styles["work-experience__save"]}
+                  onClick={saveEditingExperience}
+                  type="button"
+                >
+                  Done
+                </button>
+              </div>
+            </article>
+          ) : (
+            <article
+              key={`${item.companyName}-${item.roleTitle}`}
+              className={styles["work-experience__display-card"]}
+            >
+              <div className={styles["work-experience__content"]}>
+                <p className={styles["work-experience__company"]}>{item.companyName}</p>
+                <p className={styles["work-experience__meta"]}>
+                  {item.roleTitle} • {item.location}
+                </p>
+                <p className={styles["work-experience__meta"]}>
+                  {item.startDate} - {item.isPresent ? "Present" : item.endDate}
+                </p>
+                {item.achievements.length > 0 ? (
+                  <ul className={styles["work-experience__achievement-list"]}>
+                    {item.achievements.map((achievement) => (
+                      <li key={achievement}>{achievement}</li>
+                    ))}
+                  </ul>
+                ) : null}
+              </div>
+
+              <div className={styles["work-experience__toolbar"]}>
+                <button
+                  onClick={() => startEditingExperience(index)}
+                  type="button"
+                >
+                  <Icon name="edit" />
+                </button>
+                <button onClick={() => removeExperience(index)} type="button">
+                  <Icon name="delete" />
+                </button>
+              </div>
+            </article>
+          ),
+        )}
       </div>
     </SectionCard>
   );
