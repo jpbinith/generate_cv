@@ -1,5 +1,12 @@
-import { upsertMasterProfileByUserId } from "./master-profile.repository.js";
-import type { SaveMasterProfileInput, SaveMasterProfileResult } from "./types/master-profile.types.js";
+import {
+  findMasterProfileByUserId,
+  upsertMasterProfileByUserId,
+} from "./master-profile.repository.js";
+import type {
+  GetMasterProfileResult,
+  SaveMasterProfileInput,
+  SaveMasterProfileResult,
+} from "./types/master-profile.types.js";
 
 export class MasterProfileServiceError extends Error {
   readonly statusCode: number;
@@ -21,6 +28,14 @@ export async function saveMasterProfile(
   userId: string,
 ): Promise<SaveMasterProfileResult> {
   const masterProfile = await upsertMasterProfileByUserId(userId, input);
+
+  return { masterProfile };
+}
+
+export async function getMasterProfile(
+  userId: string,
+): Promise<GetMasterProfileResult> {
+  const masterProfile = await findMasterProfileByUserId(userId);
 
   return { masterProfile };
 }

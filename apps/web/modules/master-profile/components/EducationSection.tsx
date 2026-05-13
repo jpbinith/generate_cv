@@ -137,7 +137,7 @@ export function EducationSection({ items, onChange }: EducationSectionProps) {
                 onClick={saveDraftEducation}
                 type="button"
               >
-                Save Education
+                Add Education
               </button>
             </div>
           </article>

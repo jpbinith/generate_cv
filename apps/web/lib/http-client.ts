@@ -42,6 +42,16 @@ export async function post<TResponse>(
   });
 }
 
+export async function get<TResponse>(
+  path: string,
+  options: Omit<RequestOptions, "body" | "method"> = {},
+): Promise<TResponse> {
+  return request<TResponse>(path, {
+    ...options,
+    method: "GET",
+  });
+}
+
 export async function put<TResponse>(
   path: string,
   options: RequestOptions = {},
@@ -55,6 +65,7 @@ export async function put<TResponse>(
 async function request<TResponse>(
   path: string,
   options: RequestOptions,
+  hasRetriedAfterRefresh = false,
 ): Promise<TResponse> {
   const response = await fetch(`${getApiBaseUrl()}${path}`, {
     method: options.method,
@@ -65,6 +76,18 @@ async function request<TResponse>(
     credentials: options.credentials,
     body: options.body === undefined ? undefined : JSON.stringify(options.body),
   });
+
+  if (
+    response.status === 401 &&
+    !hasRetriedAfterRefresh &&
+    shouldAttemptSessionRefresh(path)
+  ) {
+    const didRefreshSucceed = await refreshSession();
+
+    if (didRefreshSucceed) {
+      return request<TResponse>(path, options, true);
+    }
+  }
 
   if (response.ok) {
     return (await response.json()) as TResponse;
@@ -83,6 +106,35 @@ async function request<TResponse>(
 
 function getApiBaseUrl(): string {
   return process.env.NEXT_PUBLIC_API_BASE_URL ?? DEFAULT_API_BASE_URL;
+}
+
+let refreshSessionPromise: Promise<boolean> | null = null;
+
+function shouldAttemptSessionRefresh(path: string): boolean {
+  return (
+    path !== "/api/auth/sign-in" &&
+    path !== "/api/auth/sign-up" &&
+    path !== "/api/auth/refresh"
+  );
+}
+
+async function refreshSession(): Promise<boolean> {
+  if (!refreshSessionPromise) {
+    refreshSessionPromise = fetch(`${getApiBaseUrl()}/api/auth/refresh`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.ok)
+      .catch(() => false)
+      .finally(() => {
+        refreshSessionPromise = null;
+      });
+  }
+
+  return refreshSessionPromise;
 }
 
 async function safeParseJson(response: Response): Promise<unknown> {

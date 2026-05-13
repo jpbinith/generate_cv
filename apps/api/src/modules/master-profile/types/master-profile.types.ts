@@ -18,3 +18,7 @@ export type SaveMasterProfileInput = {
 export type SaveMasterProfileResult = {
   masterProfile: MasterProfile;
 };
+
+export type GetMasterProfileResult = {
+  masterProfile: MasterProfile | null;
+};

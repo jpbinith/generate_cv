@@ -220,7 +220,7 @@ export function WorkExperienceSection({
                 onClick={saveDraftExperience}
                 type="button"
               >
-                Save Experience
+                Add Experience
               </button>
             </div>
           </article>

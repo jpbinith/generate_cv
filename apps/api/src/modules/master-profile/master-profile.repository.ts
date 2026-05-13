@@ -9,6 +9,14 @@ function getMasterProfilesCollection(): Collection<MasterProfile> {
   return getDatabase().collection<MasterProfile>(MASTER_PROFILES_COLLECTION_NAME);
 }
 
+export async function findMasterProfileByUserId(
+  userId: string,
+): Promise<MasterProfile | null> {
+  return getMasterProfilesCollection().findOne({
+    userId: new ObjectId(userId),
+  });
+}
+
 export async function upsertMasterProfileByUserId(
   userId: string,
   input: SaveMasterProfileInput,

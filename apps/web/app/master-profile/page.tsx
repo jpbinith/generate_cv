@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { HttpClientError } from "@/lib/http-client";
+import { useEffect, useState } from "react";
 import { getMasterProfileViewModel } from "@/modules/master-profile/services/masterProfileMockService";
-import { saveMasterProfile } from "@/modules/master-profile/services/master-profile.service";
+import {
+  fetchMasterProfile,
+  saveMasterProfile,
+} from "@/modules/master-profile/services/master-profile.service";
 import { EducationSection } from "@/modules/master-profile/components/EducationSection";
 import { PersonalInformationSection } from "@/modules/master-profile/components/PersonalInformationSection";
 import { ProfessionalSummarySection } from "@/modules/master-profile/components/ProfessionalSummarySection";
@@ -41,14 +43,46 @@ export default function MasterProfilePage() {
   const [viewModel] = useState(() => getMasterProfileViewModel());
   const [savedFormData, setSavedFormData] = useState(() => toFormData(viewModel));
   const [formData, setFormData] = useState(() => toFormData(viewModel));
+  const [isLoading, setIsLoading] = useState(true);
   const [isDirty, setIsDirty] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [formVersion, setFormVersion] = useState(0);
-  const [saveErrorMessage, setSaveErrorMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    async function loadMasterProfile() {
+      try {
+        const result = await fetchMasterProfile();
+
+        if (isCancelled) {
+          return;
+        }
+
+        if (result.masterProfile) {
+          setSavedFormData(result.masterProfile);
+          setFormData(result.masterProfile);
+        }
+      } catch {
+        if (isCancelled) {
+          return;
+        }
+      } finally {
+        if (!isCancelled) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    void loadMasterProfile();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, []);
 
   function markDirty() {
     setIsDirty(true);
-    setSaveErrorMessage(null);
   }
 
   function updatePersonalInfo(field: keyof PersonalInfo, value: string) {
@@ -90,24 +124,17 @@ export default function MasterProfilePage() {
     setFormData(savedFormData);
     setFormVersion((currentValue) => currentValue + 1);
     setIsDirty(false);
-    setSaveErrorMessage(null);
   }
 
   async function handleSaveChanges() {
     setIsSaving(true);
-    setSaveErrorMessage(null);
 
     try {
       await saveMasterProfile(formData);
 
       setSavedFormData(formData);
       setIsDirty(false);
-    } catch (error: unknown) {
-      if (error instanceof HttpClientError) {
-        setSaveErrorMessage(error.message);
-      } else {
-        setSaveErrorMessage("Unable to save changes right now.");
-      }
+    } catch {
     } finally {
       setIsSaving(false);
     }
@@ -139,9 +166,10 @@ export default function MasterProfilePage() {
         />
         <SkillsSection groups={formData.skillGroups} />
       </div>
+      {isLoading ? <p>Loading master profile...</p> : null}
       {isDirty ? (
         <StickySaveBar
-          statusText={saveErrorMessage ?? "You have unsaved changes"}
+          statusText="You have unsaved changes"
           isSaving={isSaving}
           onDiscard={handleDiscardChanges}
           onSave={handleSaveChanges}
