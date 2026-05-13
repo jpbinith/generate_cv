@@ -18,6 +18,7 @@ import type {
   MasterProfileFormData,
   MasterProfileViewModel,
   PersonalInfo,
+  SkillGroup,
   WorkExperienceItem,
 } from "@/modules/master-profile/types/master-profile.types";
 import styles from "./page.module.scss";
@@ -120,6 +121,14 @@ export default function MasterProfilePage() {
     markDirty();
   }
 
+  function updateSkillGroups(skillGroups: SkillGroup[]) {
+    setFormData((currentValue) => ({
+      ...currentValue,
+      skillGroups,
+    }));
+    markDirty();
+  }
+
   function handleDiscardChanges() {
     setFormData(savedFormData);
     setFormVersion((currentValue) => currentValue + 1);
@@ -164,7 +173,10 @@ export default function MasterProfilePage() {
           items={formData.education}
           onChange={updateEducation}
         />
-        <SkillsSection groups={formData.skillGroups} />
+        <SkillsSection
+          groups={formData.skillGroups}
+          onChange={updateSkillGroups}
+        />
       </div>
       {isLoading ? <p>Loading master profile...</p> : null}
       {isDirty ? (
