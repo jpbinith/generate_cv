@@ -24,6 +24,9 @@ export function ResearchPublicationsSection({
 }: ResearchPublicationsSectionProps) {
   const [draftPublication, setDraftPublication] =
     useState<ResearchPublicationItem | null>(null);
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [editingPublication, setEditingPublication] =
+    useState<ResearchPublicationItem | null>(null);
 
   function updateDraftPublication(
     field: keyof ResearchPublicationItem,
@@ -59,20 +62,67 @@ export function ResearchPublicationsSection({
     setDraftPublication(null);
   }
 
-  function updateExistingPublication(
-    index: number,
+  function startEditingPublication(index: number) {
+    setEditingIndex(index);
+    setEditingPublication({ ...items[index] });
+  }
+
+  function updateEditingPublication(
     field: keyof ResearchPublicationItem,
     value: string,
   ) {
-    onChange(
-      items.map((item, itemIndex) =>
-        itemIndex === index ? { ...item, [field]: value } : item,
-      ),
+    setEditingPublication((currentValue) =>
+      currentValue ? { ...currentValue, [field]: value } : currentValue,
     );
   }
 
   function removePublication(index: number) {
     onChange(items.filter((_, itemIndex) => itemIndex !== index));
+
+    if (editingIndex === index) {
+      setEditingIndex(null);
+      setEditingPublication(null);
+      return;
+    }
+
+    if (editingIndex !== null && editingIndex > index) {
+      setEditingIndex(editingIndex - 1);
+    }
+  }
+
+  function cancelEditingPublication() {
+    setEditingIndex(null);
+    setEditingPublication(null);
+  }
+
+  function saveEditingPublication() {
+    if (editingIndex === null || !editingPublication) {
+      return;
+    }
+
+    const normalizedPublication: ResearchPublicationItem = {
+      title: editingPublication.title.trim(),
+      venue: editingPublication.venue.trim(),
+      publicationDate: editingPublication.publicationDate.trim(),
+      url: editingPublication.url.trim(),
+      summary: editingPublication.summary.trim(),
+    };
+
+    if (
+      !normalizedPublication.title ||
+      !normalizedPublication.venue ||
+      !normalizedPublication.publicationDate
+    ) {
+      return;
+    }
+
+    onChange(
+      items.map((item, itemIndex) =>
+        itemIndex === editingIndex ? normalizedPublication : item,
+      ),
+    );
+    setEditingIndex(null);
+    setEditingPublication(null);
   }
 
   return (
@@ -181,78 +231,126 @@ export function ResearchPublicationsSection({
           </article>
         ) : null}
 
-        {items.map((item, index) => (
-          <article
-            key={`${item.title}-${item.venue}-${index}`}
-            className={styles["research-publications__item"]}
-          >
-            <div className={styles["research-publications__toolbar"]}>
-              <button
-                onClick={() => removePublication(index)}
-                type="button"
-              >
-                <Icon name="delete" />
-              </button>
-            </div>
+        {items.map((item, index) =>
+          editingIndex === index && editingPublication ? (
+            <article
+              key={`${item.title}-${item.venue}-${index}`}
+              className={`${styles["research-publications__item"]} ${styles["research-publications__item--draft"]}`}
+            >
+              <div className={styles["research-publications__draft-badge"]}>
+                Edit Publication
+              </div>
 
-            <div className={styles["research-publications__grid"]}>
-              <label className={styles["research-publications__field"]}>
-                <span>Title</span>
-                <input
-                  onChange={(event) =>
-                    updateExistingPublication(index, "title", event.target.value)
-                  }
-                  type="text"
-                  value={item.title}
-                />
-              </label>
-              <label className={styles["research-publications__field"]}>
-                <span>Venue</span>
-                <input
-                  onChange={(event) =>
-                    updateExistingPublication(index, "venue", event.target.value)
-                  }
-                  type="text"
-                  value={item.venue}
-                />
-              </label>
-              <label className={styles["research-publications__field"]}>
-                <span>Publication Date</span>
-                <MonthInput
-                  onChange={(event) =>
-                    updateExistingPublication(
-                      index,
-                      "publicationDate",
-                      event.target.value,
-                    )
-                  }
-                  value={item.publicationDate}
-                />
-              </label>
-              <label className={styles["research-publications__field"]}>
-                <span>Link</span>
-                <input
-                  onChange={(event) =>
-                    updateExistingPublication(index, "url", event.target.value)
-                  }
-                  type="url"
-                  value={item.url}
-                />
-              </label>
-            </div>
+              <div className={styles["research-publications__grid"]}>
+                <label className={styles["research-publications__field"]}>
+                  <span>Title</span>
+                  <input
+                    onChange={(event) =>
+                      updateEditingPublication("title", event.target.value)
+                    }
+                    type="text"
+                    value={editingPublication.title}
+                  />
+                </label>
+                <label className={styles["research-publications__field"]}>
+                  <span>Venue</span>
+                  <input
+                    onChange={(event) =>
+                      updateEditingPublication("venue", event.target.value)
+                    }
+                    type="text"
+                    value={editingPublication.venue}
+                  />
+                </label>
+                <label className={styles["research-publications__field"]}>
+                  <span>Publication Date</span>
+                  <MonthInput
+                    onChange={(event) =>
+                      updateEditingPublication(
+                        "publicationDate",
+                        event.target.value,
+                      )
+                    }
+                    value={editingPublication.publicationDate}
+                  />
+                </label>
+                <label className={styles["research-publications__field"]}>
+                  <span>Link</span>
+                  <input
+                    onChange={(event) =>
+                      updateEditingPublication("url", event.target.value)
+                    }
+                    type="url"
+                    value={editingPublication.url}
+                  />
+                </label>
+              </div>
 
-            <label className={styles["research-publications__summary"]}>
-              <span>Summary</span>
-              <textarea
-                onChange={(event) =>
-                  updateExistingPublication(index, "summary", event.target.value)
-                }
-                rows={4}
-                value={item.summary}
-              />
-            </label>
-          </article>
-        ))}
+              <label className={styles["research-publications__summary"]}>
+                <span>Summary</span>
+                <textarea
+                  onChange={(event) =>
+                    updateEditingPublication("summary", event.target.value)
+                  }
+                  rows={4}
+                  value={editingPublication.summary}
+                />
+              </label>
+
+              <div className={styles["research-publications__draft-actions"]}>
+                <button
+                  className={styles["research-publications__cancel"]}
+                  onClick={cancelEditingPublication}
+                  type="button"
+                >
+                  Cancel
+                </button>
+                <button
+                  className={styles["research-publications__save"]}
+                  onClick={saveEditingPublication}
+                  type="button"
+                >
+                  Done
+                </button>
+              </div>
+            </article>
+          ) : (
+            <article
+              key={`${item.title}-${item.venue}-${index}`}
+              className={styles["research-publications__display-card"]}
+            >
+              <div className={styles["research-publications__content"]}>
+                <p className={styles["research-publications__title"]}>{item.title}</p>
+                <p className={styles["research-publications__meta"]}>
+                  {item.venue} • {item.publicationDate}
+                </p>
+                {item.url ? (
+                  <p className={styles["research-publications__link"]}>{item.url}</p>
+                ) : null}
+                {item.summary ? (
+                  <p className={styles["research-publications__summary-text"]}>
+                    {item.summary}
+                  </p>
+                ) : null}
+              </div>
+
+              <div className={styles["research-publications__toolbar"]}>
+                <button
+                  onClick={() => startEditingPublication(index)}
+                  type="button"
+                >
+                  <Icon name="edit" />
+                </button>
+                <button
+                  onClick={() => removePublication(index)}
+                  type="button"
+                >
+                  <Icon name="delete" />
+                </button>
+              </div>
+            </article>
+          ),
+        )}
       </div>
     </SectionCard>
   );
