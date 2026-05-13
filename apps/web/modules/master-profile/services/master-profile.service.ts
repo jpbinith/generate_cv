@@ -21,10 +21,14 @@ function normalizeMasterProfile(
     ...masterProfile,
     workExperience: masterProfile.workExperience.map((item) => ({
       ...item,
+      endDate: item.isPresent || item.endDate === "Present" ? "" : item.endDate,
+      isPresent: item.isPresent ?? item.endDate === "Present",
       achievements: item.achievements ?? [],
     })),
     education: masterProfile.education.map((item) => ({
       ...item,
+      endDate: item.isPresent || item.endDate === "Present" ? "" : item.endDate,
+      isPresent: item.isPresent ?? item.endDate === "Present",
       achievements: item.achievements ?? [],
     })),
     researchPublications: masterProfile.researchPublications ?? [],

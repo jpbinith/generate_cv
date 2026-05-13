@@ -22,6 +22,7 @@ export interface MasterProfileExperienceItem {
   location: string;
   startDate: string;
   endDate: string;
+  isPresent: boolean;
   achievements: string[];
 }
 
@@ -30,6 +31,7 @@ export interface MasterProfileEducationItem {
   institution: string;
   startDate: string;
   endDate: string;
+  isPresent: boolean;
   achievements: string[];
 }
 

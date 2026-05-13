@@ -16,6 +16,7 @@ const EMPTY_EXPERIENCE: WorkExperienceItem = {
   location: "",
   startDate: "",
   endDate: "",
+  isPresent: false,
   achievements: [""],
 };
 
@@ -32,6 +33,18 @@ export function WorkExperienceSection({
   ) {
     setDraftExperience((currentValue) =>
       currentValue ? { ...currentValue, [field]: value } : currentValue,
+    );
+  }
+
+  function toggleDraftPresent(isPresent: boolean) {
+    setDraftExperience((currentValue) =>
+      currentValue
+        ? {
+            ...currentValue,
+            isPresent,
+            endDate: isPresent ? "" : currentValue.endDate,
+          }
+        : currentValue,
     );
   }
 
@@ -61,7 +74,8 @@ export function WorkExperienceSection({
       roleTitle: draftExperience.roleTitle.trim(),
       location: draftExperience.location.trim(),
       startDate: draftExperience.startDate.trim(),
-      endDate: draftExperience.endDate.trim(),
+      endDate: draftExperience.isPresent ? "" : draftExperience.endDate.trim(),
+      isPresent: draftExperience.isPresent,
       achievements: draftExperience.achievements
         .map((entry) => entry.trim())
         .filter(Boolean),
@@ -72,7 +86,7 @@ export function WorkExperienceSection({
       !normalizedExperience.roleTitle ||
       !normalizedExperience.location ||
       !normalizedExperience.startDate ||
-      !normalizedExperience.endDate
+      (!normalizedExperience.isPresent && !normalizedExperience.endDate)
     ) {
       return;
     }
@@ -89,6 +103,20 @@ export function WorkExperienceSection({
     onChange(
       items.map((item, itemIndex) =>
         itemIndex === index ? { ...item, [field]: value } : item,
+      ),
+    );
+  }
+
+  function toggleExistingPresent(index: number, isPresent: boolean) {
+    onChange(
+      items.map((item, itemIndex) =>
+        itemIndex === index
+          ? {
+              ...item,
+              isPresent,
+              endDate: isPresent ? "" : item.endDate,
+            }
+          : item,
       ),
     );
   }
@@ -185,12 +213,21 @@ export function WorkExperienceSection({
                   />
                   <span>—</span>
                   <MonthInput
+                    disabled={draftExperience.isPresent}
                     onChange={(event) =>
                       updateDraftExperience("endDate", event.target.value)
                     }
                     value={draftExperience.endDate}
                   />
                 </div>
+                <label className={styles["work-experience__present-toggle"]}>
+                  <input
+                    checked={draftExperience.isPresent}
+                    onChange={(event) => toggleDraftPresent(event.target.checked)}
+                    type="checkbox"
+                  />
+                  <span>Present</span>
+                </label>
               </label>
             </div>
 
@@ -286,12 +323,23 @@ export function WorkExperienceSection({
                   />
                   <span>—</span>
                   <MonthInput
+                    disabled={item.isPresent}
                     onChange={(event) =>
                       updateExistingExperience(index, "endDate", event.target.value)
                     }
                     value={item.endDate}
                   />
                 </div>
+                <label className={styles["work-experience__present-toggle"]}>
+                  <input
+                    checked={item.isPresent}
+                    onChange={(event) =>
+                      toggleExistingPresent(index, event.target.checked)
+                    }
+                    type="checkbox"
+                  />
+                  <span>Present</span>
+                </label>
               </label>
             </div>
 

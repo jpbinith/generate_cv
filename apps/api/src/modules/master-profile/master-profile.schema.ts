@@ -16,6 +16,7 @@ const workExperienceItemSchema = z.object({
   location: z.string().trim(),
   startDate: z.string().trim(),
   endDate: z.string().trim(),
+  isPresent: z.boolean(),
   achievements: z.array(z.string().trim()),
 });
 
@@ -24,6 +25,7 @@ const educationItemSchema = z.object({
   institution: z.string().trim(),
   startDate: z.string().trim(),
   endDate: z.string().trim(),
+  isPresent: z.boolean(),
   achievements: z.array(z.string().trim()),
 });
 
