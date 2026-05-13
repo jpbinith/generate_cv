@@ -2,12 +2,8 @@ import type { InputHTMLAttributes, MouseEvent } from "react";
 
 type MonthInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type">;
 
-interface PickerEnabledInput extends HTMLInputElement {
-  showPicker?: () => void;
-}
-
 function openMonthPicker(event: MouseEvent<HTMLInputElement>) {
-  const input = event.currentTarget as PickerEnabledInput;
+  const input = event.currentTarget;
 
   try {
     input.showPicker?.();

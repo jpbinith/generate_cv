@@ -17,7 +17,7 @@ export async function signIn(
   values: SignInFormValues,
 ): Promise<SignInSuccessResponse> {
   try {
-    return await post<SignInSuccessResponse>("/auth/sign-in", {
+    return await post<SignInSuccessResponse>("/api/auth/sign-in", {
       body: values,
       credentials: "include",
     });

@@ -12,7 +12,7 @@ export class SignOutRequestError extends Error {
 
 export async function signOut(): Promise<SignOutResponse> {
   try {
-    return await post<SignOutResponse>("/auth/sign-out", {
+    return await post<SignOutResponse>("/api/auth/sign-out", {
       credentials: "include",
     });
   } catch (error: unknown) {

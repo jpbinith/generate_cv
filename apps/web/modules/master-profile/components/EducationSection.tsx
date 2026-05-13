@@ -7,6 +7,7 @@ import styles from "./EducationSection.module.scss";
 
 interface EducationSectionProps {
   items: EducationItem[];
+  onChange: (items: EducationItem[]) => void;
 }
 
 const EMPTY_EDUCATION: EducationItem = {
@@ -16,8 +17,7 @@ const EMPTY_EDUCATION: EducationItem = {
   endDate: "",
 };
 
-export function EducationSection({ items }: EducationSectionProps) {
-  const [educationItems, setEducationItems] = useState(items);
+export function EducationSection({ items, onChange }: EducationSectionProps) {
   const [draftEducation, setDraftEducation] = useState<EducationItem | null>(null);
 
   function updateDraftEducation(field: keyof EducationItem, value: string) {
@@ -47,7 +47,7 @@ export function EducationSection({ items }: EducationSectionProps) {
       return;
     }
 
-    setEducationItems((currentValue) => [...currentValue, normalizedEducation]);
+    onChange([...items, normalizedEducation]);
     setDraftEducation(null);
   }
 
@@ -67,7 +67,7 @@ export function EducationSection({ items }: EducationSectionProps) {
       title="Education"
     >
       <div className={styles["education-section"]}>
-        {!draftEducation && educationItems.length === 0 ? (
+        {!draftEducation && items.length === 0 ? (
           <p className={styles["education-section__empty"]}>
             No education entries added yet.
           </p>
@@ -143,7 +143,7 @@ export function EducationSection({ items }: EducationSectionProps) {
           </article>
         ) : null}
 
-        {educationItems.map((item) => (
+        {items.map((item) => (
           <article
             key={`${item.qualification}-${item.institution}`}
             className={styles["education-section__item"]}

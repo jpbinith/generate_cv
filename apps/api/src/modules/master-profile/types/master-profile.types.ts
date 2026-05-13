@@ -8,13 +8,11 @@ import type {
 
 export type SaveMasterProfileInput = {
   personalInfo: MasterProfilePersonalInfo;
-  emailHelperText: string;
   summarySuggestion: string;
   professionalSummary: string;
   workExperience: MasterProfileExperienceItem[];
   education: MasterProfileEducationItem[];
   skillGroups: MasterProfileSkillGroup[];
-  autosaveLabel: string;
 };
 
 export type SaveMasterProfileResult = {

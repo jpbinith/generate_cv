@@ -5,11 +5,13 @@ import styles from "./ProfessionalSummarySection.module.scss";
 interface ProfessionalSummarySectionProps {
   suggestion: string;
   summary: string;
+  onChange: (value: string) => void;
 }
 
 export function ProfessionalSummarySection({
   suggestion,
   summary,
+  onChange,
 }: ProfessionalSummarySectionProps) {
   return (
     <SectionCard
@@ -24,9 +26,10 @@ export function ProfessionalSummarySection({
           </div>
         ) : null}
         <textarea
-          defaultValue={summary}
+          onChange={(event) => onChange(event.target.value)}
           placeholder="Write a concise summary of your experience, strengths, and career focus."
           rows={6}
+          value={summary}
         />
       </div>
     </SectionCard>

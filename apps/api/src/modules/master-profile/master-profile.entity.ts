@@ -36,13 +36,11 @@ export interface MasterProfile {
   _id: ObjectId;
   userId: ObjectId;
   personalInfo: MasterProfilePersonalInfo;
-  emailHelperText: string;
   summarySuggestion: string;
   professionalSummary: string;
   workExperience: MasterProfileExperienceItem[];
   education: MasterProfileEducationItem[];
   skillGroups: MasterProfileSkillGroup[];
-  autosaveLabel: string;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -6,7 +6,6 @@ import {
   insertUser,
 } from "../users/user.repository.js";
 import type { User } from "../users/user.entity.js";
-import { signInSchema, signUpSchema } from "./auth.schema.js";
 import {
   findActiveRefreshTokenByHash,
   insertRefreshToken,
@@ -41,8 +40,7 @@ export class AuthServiceError extends Error {
   }
 }
 
-export async function signUp(payload: unknown): Promise<SafeUser> {
-  const input = parseSignUpInput(payload);
+export async function signUp(input: SignUpInput): Promise<SafeUser> {
   const now = new Date();
   const passwordHash = await hashPassword(input.password);
 
@@ -80,8 +78,7 @@ export async function signUp(payload: unknown): Promise<SafeUser> {
   }
 }
 
-export async function signIn(payload: unknown): Promise<AuthResult> {
-  const input = parseSignInInput(payload);
+export async function signIn(input: SignInInput): Promise<AuthResult> {
   const user = await findUserByEmail(input.email);
 
   if (!user?.passwordHash) {
@@ -155,38 +152,6 @@ export async function signOut(refreshToken: string | null): Promise<void> {
   }
 
   await revokeRefreshTokenByHash(hashRefreshToken(refreshToken));
-}
-
-function parseSignUpInput(payload: unknown): SignUpInput {
-  const result = signUpSchema.safeParse(payload);
-
-  if (result.success) {
-    return result.data;
-  }
-
-  throw new AuthServiceError("Invalid sign-up payload.", 400, {
-    error: "Invalid sign-up payload.",
-    issues: result.error.issues.map((issue) => ({
-      field: issue.path.join("."),
-      message: issue.message,
-    })),
-  });
-}
-
-function parseSignInInput(payload: unknown): SignInInput {
-  const result = signInSchema.safeParse(payload);
-
-  if (result.success) {
-    return result.data;
-  }
-
-  throw new AuthServiceError("Invalid sign-in payload.", 400, {
-    error: "Invalid sign-in payload.",
-    issues: result.error.issues.map((issue) => ({
-      field: issue.path.join("."),
-      message: issue.message,
-    })),
-  });
 }
 
 function toSafeUser(user: User): SafeUser {

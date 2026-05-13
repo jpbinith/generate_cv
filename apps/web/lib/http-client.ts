@@ -15,7 +15,7 @@ type RequestOptions = {
   method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 };
 
-const DEFAULT_API_BASE_URL = "http://localhost:4000";
+const DEFAULT_API_BASE_URL = "";
 
 export class HttpClientError extends Error {
   readonly statusCode: number;
@@ -39,6 +39,16 @@ export async function post<TResponse>(
   return request<TResponse>(path, {
     ...options,
     method: "POST",
+  });
+}
+
+export async function put<TResponse>(
+  path: string,
+  options: RequestOptions = {},
+): Promise<TResponse> {
+  return request<TResponse>(path, {
+    ...options,
+    method: "PUT",
   });
 }
 

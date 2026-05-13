@@ -7,6 +7,7 @@ import styles from "./WorkExperienceSection.module.scss";
 
 interface WorkExperienceSectionProps {
   items: WorkExperienceItem[];
+  onChange: (items: WorkExperienceItem[]) => void;
 }
 
 const EMPTY_EXPERIENCE: WorkExperienceItem = {
@@ -18,8 +19,10 @@ const EMPTY_EXPERIENCE: WorkExperienceItem = {
   achievements: [""],
 };
 
-export function WorkExperienceSection({ items }: WorkExperienceSectionProps) {
-  const [experienceItems, setExperienceItems] = useState(items);
+export function WorkExperienceSection({
+  items,
+  onChange,
+}: WorkExperienceSectionProps) {
   const [draftExperience, setDraftExperience] =
     useState<WorkExperienceItem | null>(null);
 
@@ -74,8 +77,37 @@ export function WorkExperienceSection({ items }: WorkExperienceSectionProps) {
       return;
     }
 
-    setExperienceItems((currentValue) => [...currentValue, normalizedExperience]);
+    onChange([...items, normalizedExperience]);
     setDraftExperience(null);
+  }
+
+  function updateExistingExperience(
+    index: number,
+    field: keyof Omit<WorkExperienceItem, "achievements">,
+    value: string,
+  ) {
+    onChange(
+      items.map((item, itemIndex) =>
+        itemIndex === index ? { ...item, [field]: value } : item,
+      ),
+    );
+  }
+
+  function updateExistingAchievements(index: number, value: string) {
+    const achievements = value
+      .split("\n")
+      .map((entry) => entry.replace(/^•\s*/, "").trim())
+      .filter(Boolean);
+
+    onChange(
+      items.map((item, itemIndex) =>
+        itemIndex === index ? { ...item, achievements } : item,
+      ),
+    );
+  }
+
+  function removeExperience(index: number) {
+    onChange(items.filter((_, itemIndex) => itemIndex !== index));
   }
 
   return (
@@ -94,7 +126,7 @@ export function WorkExperienceSection({ items }: WorkExperienceSectionProps) {
       title="Work Experience"
     >
       <div className={styles["work-experience"]}>
-        {!draftExperience && experienceItems.length === 0 ? (
+        {!draftExperience && items.length === 0 ? (
           <p className={styles["work-experience__empty"]}>
             No work experience added yet.
           </p>
@@ -194,7 +226,7 @@ export function WorkExperienceSection({ items }: WorkExperienceSectionProps) {
           </article>
         ) : null}
 
-        {experienceItems.map((item) => (
+        {items.map((item, index) => (
           <article
             key={`${item.companyName}-${item.roleTitle}`}
             className={styles["work-experience__item"]}
@@ -203,7 +235,7 @@ export function WorkExperienceSection({ items }: WorkExperienceSectionProps) {
               <button type="button">
                 <Icon name="drag_indicator" />
               </button>
-              <button type="button">
+              <button onClick={() => removeExperience(index)} type="button">
                 <Icon name="delete" />
               </button>
             </div>
@@ -211,22 +243,54 @@ export function WorkExperienceSection({ items }: WorkExperienceSectionProps) {
             <div className={styles["work-experience__grid"]}>
               <label className={styles["work-experience__field"]}>
                 <span>Company Name</span>
-                <input defaultValue={item.companyName} type="text" />
+                <input
+                  onChange={(event) =>
+                    updateExistingExperience(
+                      index,
+                      "companyName",
+                      event.target.value,
+                    )
+                  }
+                  type="text"
+                  value={item.companyName}
+                />
               </label>
               <label className={styles["work-experience__field"]}>
                 <span>Role / Title</span>
-                <input defaultValue={item.roleTitle} type="text" />
+                <input
+                  onChange={(event) =>
+                    updateExistingExperience(index, "roleTitle", event.target.value)
+                  }
+                  type="text"
+                  value={item.roleTitle}
+                />
               </label>
               <label className={styles["work-experience__field"]}>
                 <span>Location</span>
-                <input defaultValue={item.location} type="text" />
+                <input
+                  onChange={(event) =>
+                    updateExistingExperience(index, "location", event.target.value)
+                  }
+                  type="text"
+                  value={item.location}
+                />
               </label>
               <label className={styles["work-experience__field"]}>
                 <span>Dates</span>
                 <div className={styles["work-experience__dates"]}>
-                  <MonthInput defaultValue={item.startDate} />
+                  <MonthInput
+                    onChange={(event) =>
+                      updateExistingExperience(index, "startDate", event.target.value)
+                    }
+                    value={item.startDate}
+                  />
                   <span>—</span>
-                  <MonthInput defaultValue={item.endDate} />
+                  <MonthInput
+                    onChange={(event) =>
+                      updateExistingExperience(index, "endDate", event.target.value)
+                    }
+                    value={item.endDate}
+                  />
                 </div>
               </label>
             </div>
@@ -234,8 +298,11 @@ export function WorkExperienceSection({ items }: WorkExperienceSectionProps) {
             <label className={styles["work-experience__achievements"]}>
               <span>Key Achievements</span>
               <textarea
-                defaultValue={item.achievements.map((entry) => `• ${entry}`).join("\n")}
+                onChange={(event) =>
+                  updateExistingAchievements(index, event.target.value)
+                }
                 rows={4}
+                value={item.achievements.map((entry) => `• ${entry}`).join("\n")}
               />
             </label>
           </article>

@@ -22,13 +22,11 @@ export async function upsertMasterProfileByUserId(
   const nextProfile: Omit<MasterProfile, "_id"> = {
     userId: userObjectId,
     personalInfo: input.personalInfo,
-    emailHelperText: input.emailHelperText,
     summarySuggestion: input.summarySuggestion,
     professionalSummary: input.professionalSummary,
     workExperience: input.workExperience,
     education: input.education,
     skillGroups: input.skillGroups,
-    autosaveLabel: input.autosaveLabel,
     createdAt: existingProfile?.createdAt ?? now,
     updatedAt: now,
   };

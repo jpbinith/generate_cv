@@ -39,16 +39,17 @@ export interface SkillGroup {
   addLabel: string;
 }
 
-export interface MasterProfileViewModel {
-  navigationItems: NavigationItem[];
-  topBarTitle: string;
-  progressOverview: ProgressOverview;
+export interface MasterProfileFormData {
   personalInfo: PersonalInfo;
-  emailHelperText: string;
   summarySuggestion: string;
   professionalSummary: string;
   workExperience: WorkExperienceItem[];
   education: EducationItem[];
   skillGroups: SkillGroup[];
-  autosaveLabel: string;
+}
+
+export interface MasterProfileViewModel extends MasterProfileFormData {
+  navigationItems: NavigationItem[];
+  topBarTitle: string;
+  progressOverview: ProgressOverview;
 }

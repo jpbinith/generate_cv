@@ -226,8 +226,12 @@ styles/
 * Keep API routes/controllers thin.
 * Put OpenAI logic in a dedicated service.
 * Backend module-specific types must live in `modules/<feature>/types/` files such as `auth.types.ts`.
-* Validate request bodies before processing.
+* Validate request bodies at the route or middleware boundary before processing.
 * Services must not use Express `req` or `res` objects directly.
+* Services must accept concrete typed inputs, not raw Express request bodies.
+* Do not leave service payload parameters typed as `unknown`; parse and narrow them before calling services.
+* Authentication and authorization checks for protected APIs must be enforced by backend middleware, not inside services.
+* All backend API routes except `sign-in` and `sign-up` must be protected by validation middleware appropriate to the endpoint.
 * Routes/controllers should send success responses only.
 * Use a global Express error handler for shared error responses and unexpected `500` failures.
 * Services may throw structured domain/service errors, and the global error handler should translate them into HTTP responses.
@@ -248,6 +252,7 @@ styles/
 
 * Use strict TypeScript.
 * Avoid `any`.
+* Avoid `unknown` in service method signatures when a concrete validated type should be used instead.
 * Prefer typed API responses.
 * Use shared types from `packages/shared`.
 * Use Zod schemas for runtime validation.

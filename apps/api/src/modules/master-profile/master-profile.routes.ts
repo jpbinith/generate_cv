@@ -4,6 +4,7 @@ import {
   requireAccessToken,
   type AuthenticatedLocals,
 } from "../../middleware/authentication.js";
+import { parseSaveMasterProfileInput } from "./master-profile.schema.js";
 import { saveMasterProfile } from "./master-profile.service.js";
 
 export const masterProfileRouter = Router();
@@ -12,7 +13,7 @@ masterProfileRouter.use(requireAccessToken);
 
 masterProfileRouter.put("/", async (req, res: Response<unknown, AuthenticatedLocals>) => {
   const result = await saveMasterProfile(
-    req.body,
+    parseSaveMasterProfileInput(req.body),
     res.locals.authenticatedUserId,
   );
 

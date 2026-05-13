@@ -29,8 +29,6 @@ export function getMasterProfileViewModel(): MasterProfileViewModel {
       githubUrl: "",
       mediumUrl: "",
     },
-    emailHelperText:
-      "Use a professional email address like name.surname@provider.com",
     summarySuggestion: "",
     professionalSummary: "",
     workExperience: [],
@@ -49,6 +47,5 @@ export function getMasterProfileViewModel(): MasterProfileViewModel {
         addLabel: "+ Add Skill",
       },
     ],
-    autosaveLabel: "No saved changes yet",
   };
 }

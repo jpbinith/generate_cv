@@ -17,7 +17,7 @@ export async function signUp(
   values: SignUpFormValues,
 ): Promise<SignUpSuccessResponse> {
   try {
-    return await post<SignUpSuccessResponse>("/auth/sign-up", {
+    return await post<SignUpSuccessResponse>("/api/auth/sign-up", {
       body: values,
     });
   } catch (error: unknown) {

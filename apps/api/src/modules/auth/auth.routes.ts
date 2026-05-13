@@ -4,6 +4,7 @@ import {
   requireRefreshToken,
   type AuthenticatedLocals,
 } from "../../middleware/authentication.js";
+import { parseSignInInput, parseSignUpInput } from "./auth.schema.js";
 import { clearAuthCookies, setAuthCookies } from "./auth.cookies.js";
 import {
   refreshAuthSession,
@@ -15,7 +16,7 @@ import {
 export const authRouter = Router();
 
 authRouter.post("/sign-up", async (req, res) => {
-  const user = await signUp(req.body);
+  const user = await signUp(parseSignUpInput(req.body));
 
   res.status(201).json({
     message: "Account created successfully.",
@@ -24,7 +25,7 @@ authRouter.post("/sign-up", async (req, res) => {
 });
 
 authRouter.post("/sign-in", async (req, res) => {
-  const result = await signIn(req.body);
+  const result = await signIn(parseSignInInput(req.body));
 
   setAuthCookies(res, result.tokens);
 
