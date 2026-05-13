@@ -34,6 +34,7 @@ export async function upsertMasterProfileByUserId(
     professionalSummary: input.professionalSummary,
     workExperience: input.workExperience,
     education: input.education,
+    researchPublications: input.researchPublications,
     skillGroups: input.skillGroups,
     createdAt: existingProfile?.createdAt ?? now,
     updatedAt: now,

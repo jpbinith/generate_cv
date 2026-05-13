@@ -10,6 +10,7 @@ import { EducationSection } from "@/modules/master-profile/components/EducationS
 import { PersonalInformationSection } from "@/modules/master-profile/components/PersonalInformationSection";
 import { ProfessionalSummarySection } from "@/modules/master-profile/components/ProfessionalSummarySection";
 import { ProgressOverview } from "@/modules/master-profile/components/ProgressOverview";
+import { ResearchPublicationsSection } from "@/modules/master-profile/components/ResearchPublicationsSection";
 import { SkillsSection } from "@/modules/master-profile/components/SkillsSection";
 import { StickySaveBar } from "@/modules/master-profile/components/StickySaveBar";
 import { WorkExperienceSection } from "@/modules/master-profile/components/WorkExperienceSection";
@@ -18,6 +19,7 @@ import type {
   MasterProfileFormData,
   MasterProfileViewModel,
   PersonalInfo,
+  ResearchPublicationItem,
   SkillGroup,
   WorkExperienceItem,
 } from "@/modules/master-profile/types/master-profile.types";
@@ -33,6 +35,7 @@ function toFormData(viewModel: MasterProfileViewModel): MasterProfileFormData {
       achievements: [...item.achievements],
     })),
     education: viewModel.education.map((item) => ({ ...item })),
+    researchPublications: viewModel.researchPublications.map((item) => ({ ...item })),
     skillGroups: viewModel.skillGroups.map((group) => ({
       ...group,
       items: [...group.items],
@@ -129,6 +132,14 @@ export default function MasterProfilePage() {
     markDirty();
   }
 
+  function updateResearchPublications(items: ResearchPublicationItem[]) {
+    setFormData((currentValue) => ({
+      ...currentValue,
+      researchPublications: items,
+    }));
+    markDirty();
+  }
+
   function handleDiscardChanges() {
     setFormData(savedFormData);
     setFormVersion((currentValue) => currentValue + 1);
@@ -172,6 +183,10 @@ export default function MasterProfilePage() {
         <EducationSection
           items={formData.education}
           onChange={updateEducation}
+        />
+        <ResearchPublicationsSection
+          items={formData.researchPublications}
+          onChange={updateResearchPublications}
         />
         <SkillsSection
           groups={formData.skillGroups}

@@ -27,6 +27,7 @@ function normalizeMasterProfile(
       ...item,
       achievements: item.achievements ?? [],
     })),
+    researchPublications: masterProfile.researchPublications ?? [],
     skillGroups: masterProfile.skillGroups.map((group) => ({
       ...group,
       items: group.items ?? [],

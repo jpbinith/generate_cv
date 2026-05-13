@@ -33,6 +33,14 @@ export interface MasterProfileEducationItem {
   achievements: string[];
 }
 
+export interface MasterProfileResearchPublicationItem {
+  title: string;
+  venue: string;
+  publicationDate: string;
+  url: string;
+  summary: string;
+}
+
 export interface MasterProfile {
   _id: ObjectId;
   userId: ObjectId;
@@ -41,6 +49,7 @@ export interface MasterProfile {
   professionalSummary: string;
   workExperience: MasterProfileExperienceItem[];
   education: MasterProfileEducationItem[];
+  researchPublications: MasterProfileResearchPublicationItem[];
   skillGroups: MasterProfileSkillGroup[];
   createdAt: Date;
   updatedAt: Date;

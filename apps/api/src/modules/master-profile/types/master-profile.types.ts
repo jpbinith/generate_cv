@@ -3,6 +3,7 @@ import type {
   MasterProfileEducationItem,
   MasterProfileExperienceItem,
   MasterProfilePersonalInfo,
+  MasterProfileResearchPublicationItem,
   MasterProfileSkillGroup,
 } from "../master-profile.entity.js";
 
@@ -12,6 +13,7 @@ export type SaveMasterProfileInput = {
   professionalSummary: string;
   workExperience: MasterProfileExperienceItem[];
   education: MasterProfileEducationItem[];
+  researchPublications: MasterProfileResearchPublicationItem[];
   skillGroups: MasterProfileSkillGroup[];
 };
 

@@ -33,6 +33,7 @@ export function getMasterProfileViewModel(): MasterProfileViewModel {
     professionalSummary: "",
     workExperience: [],
     education: [],
+    researchPublications: [],
     skillGroups: [
       {
         title: "Technical Skills",

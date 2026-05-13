@@ -33,6 +33,14 @@ export interface EducationItem {
   achievements: string[];
 }
 
+export interface ResearchPublicationItem {
+  title: string;
+  venue: string;
+  publicationDate: string;
+  url: string;
+  summary: string;
+}
+
 export interface SkillGroup {
   title: string;
   tone: "primary" | "tertiary";
@@ -46,6 +54,7 @@ export interface MasterProfileFormData {
   professionalSummary: string;
   workExperience: WorkExperienceItem[];
   education: EducationItem[];
+  researchPublications: ResearchPublicationItem[];
   skillGroups: SkillGroup[];
 }
 

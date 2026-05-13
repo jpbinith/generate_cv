@@ -27,6 +27,14 @@ const educationItemSchema = z.object({
   achievements: z.array(z.string().trim()),
 });
 
+const researchPublicationItemSchema = z.object({
+  title: z.string().trim(),
+  venue: z.string().trim(),
+  publicationDate: z.string().trim(),
+  url: z.string().trim(),
+  summary: z.string().trim(),
+});
+
 const skillGroupSchema = z.object({
   title: z.string().trim(),
   tone: z.enum(["primary", "tertiary"]),
@@ -40,6 +48,7 @@ export const saveMasterProfileSchema = z.object({
   professionalSummary: z.string().trim(),
   workExperience: z.array(workExperienceItemSchema),
   education: z.array(educationItemSchema),
+  researchPublications: z.array(researchPublicationItemSchema),
   skillGroups: z.array(skillGroupSchema),
 });
 
