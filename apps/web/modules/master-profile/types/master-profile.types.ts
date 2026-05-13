@@ -30,6 +30,7 @@ export interface EducationItem {
   institution: string;
   startDate: string;
   endDate: string;
+  achievements: string[];
 }
 
 export interface SkillGroup {

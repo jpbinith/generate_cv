@@ -24,6 +24,7 @@ const educationItemSchema = z.object({
   institution: z.string().trim(),
   startDate: z.string().trim(),
   endDate: z.string().trim(),
+  achievements: z.array(z.string().trim()),
 });
 
 const skillGroupSchema = z.object({

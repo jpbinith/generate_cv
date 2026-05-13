@@ -15,6 +15,7 @@ const EMPTY_EDUCATION: EducationItem = {
   institution: "",
   startDate: "",
   endDate: "",
+  achievements: [""],
 };
 
 export function EducationSection({ items, onChange }: EducationSectionProps) {
@@ -23,6 +24,21 @@ export function EducationSection({ items, onChange }: EducationSectionProps) {
   function updateDraftEducation(field: keyof EducationItem, value: string) {
     setDraftEducation((currentValue) =>
       currentValue ? { ...currentValue, [field]: value } : currentValue,
+    );
+  }
+
+  function updateDraftAchievements(value: string) {
+    const achievementLines = value
+      .split("\n")
+      .map((entry) => entry.replace(/^•\s*/, "").trim());
+
+    setDraftEducation((currentValue) =>
+      currentValue
+        ? {
+            ...currentValue,
+            achievements: achievementLines.length > 0 ? achievementLines : [""],
+          }
+        : currentValue,
     );
   }
 
@@ -36,6 +52,9 @@ export function EducationSection({ items, onChange }: EducationSectionProps) {
       institution: draftEducation.institution.trim(),
       startDate: draftEducation.startDate.trim(),
       endDate: draftEducation.endDate.trim(),
+      achievements: draftEducation.achievements
+        .map((entry) => entry.trim())
+        .filter(Boolean),
     };
 
     if (
@@ -124,6 +143,19 @@ export function EducationSection({ items, onChange }: EducationSectionProps) {
               </label>
             </div>
 
+            <label className={styles["education-section__achievements"]}>
+              <span>Key Achievements</span>
+              <textarea
+                onChange={(event) => updateDraftAchievements(event.target.value)}
+                placeholder={"• Add a notable academic achievement\n• Add another highlight"}
+                rows={4}
+                value={draftEducation.achievements
+                  .filter((entry, index, entries) => entry || entries.length === 1)
+                  .map((entry) => (entry ? `• ${entry}` : ""))
+                  .join("\n")}
+              />
+            </label>
+
             <div className={styles["education-section__draft-actions"]}>
               <button
                 className={styles["education-section__cancel"]}
@@ -155,6 +187,13 @@ export function EducationSection({ items, onChange }: EducationSectionProps) {
               <p className={styles["education-section__meta"]}>
                 {item.institution} • {item.startDate} - {item.endDate}
               </p>
+              {item.achievements.length > 0 ? (
+                <ul className={styles["education-section__achievement-list"]}>
+                  {item.achievements.map((achievement) => (
+                    <li key={achievement}>{achievement}</li>
+                  ))}
+                </ul>
+              ) : null}
             </div>
             <button className={styles["education-section__edit"]} type="button">
               <Icon name="edit" />

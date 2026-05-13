@@ -30,6 +30,7 @@ export interface MasterProfileEducationItem {
   institution: string;
   startDate: string;
   endDate: string;
+  achievements: string[];
 }
 
 export interface MasterProfile {

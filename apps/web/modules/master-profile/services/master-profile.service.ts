@@ -10,10 +10,38 @@ interface GetMasterProfileResponse {
   masterProfile: MasterProfileFormData | null;
 }
 
+function normalizeMasterProfile(
+  masterProfile: MasterProfileFormData | null,
+): MasterProfileFormData | null {
+  if (!masterProfile) {
+    return null;
+  }
+
+  return {
+    ...masterProfile,
+    workExperience: masterProfile.workExperience.map((item) => ({
+      ...item,
+      achievements: item.achievements ?? [],
+    })),
+    education: masterProfile.education.map((item) => ({
+      ...item,
+      achievements: item.achievements ?? [],
+    })),
+    skillGroups: masterProfile.skillGroups.map((group) => ({
+      ...group,
+      items: group.items ?? [],
+    })),
+  };
+}
+
 export async function fetchMasterProfile(): Promise<GetMasterProfileResponse> {
-  return get<GetMasterProfileResponse>("/api/master-profile", {
+  const response = await get<GetMasterProfileResponse>("/api/master-profile", {
     credentials: "include",
   });
+
+  return {
+    masterProfile: normalizeMasterProfile(response.masterProfile),
+  };
 }
 
 export async function saveMasterProfile(
