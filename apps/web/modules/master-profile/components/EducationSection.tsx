@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { SectionCard } from "./SectionCard";
+import { MonthInput } from "./MonthInput";
 import type { EducationItem } from "../types/master-profile.types";
 import styles from "./EducationSection.module.scss";
 
@@ -11,7 +12,8 @@ interface EducationSectionProps {
 const EMPTY_EDUCATION: EducationItem = {
   qualification: "",
   institution: "",
-  period: "",
+  startDate: "",
+  endDate: "",
 };
 
 export function EducationSection({ items }: EducationSectionProps) {
@@ -32,13 +34,15 @@ export function EducationSection({ items }: EducationSectionProps) {
     const normalizedEducation: EducationItem = {
       qualification: draftEducation.qualification.trim(),
       institution: draftEducation.institution.trim(),
-      period: draftEducation.period.trim(),
+      startDate: draftEducation.startDate.trim(),
+      endDate: draftEducation.endDate.trim(),
     };
 
     if (
       !normalizedEducation.qualification ||
       !normalizedEducation.institution ||
-      !normalizedEducation.period
+      !normalizedEducation.startDate ||
+      !normalizedEducation.endDate
     ) {
       return;
     }
@@ -101,14 +105,21 @@ export function EducationSection({ items }: EducationSectionProps) {
                 />
               </label>
               <label className={styles["education-section__field"]}>
-                <span>Period</span>
-                <input
+                <span>Start Date</span>
+                <MonthInput
                   onChange={(event) =>
-                    updateDraftEducation("period", event.target.value)
+                    updateDraftEducation("startDate", event.target.value)
                   }
-                  placeholder="e.g. 2016 - 2018"
-                  type="text"
-                  value={draftEducation.period}
+                  value={draftEducation.startDate}
+                />
+              </label>
+              <label className={styles["education-section__field"]}>
+                <span>End Date</span>
+                <MonthInput
+                  onChange={(event) =>
+                    updateDraftEducation("endDate", event.target.value)
+                  }
+                  value={draftEducation.endDate}
                 />
               </label>
             </div>
@@ -142,7 +153,7 @@ export function EducationSection({ items }: EducationSectionProps) {
                 {item.qualification}
               </p>
               <p className={styles["education-section__meta"]}>
-                {item.institution} • {item.period}
+                {item.institution} • {item.startDate} - {item.endDate}
               </p>
             </div>
             <button className={styles["education-section__edit"]} type="button">

@@ -12,6 +12,8 @@ export interface PersonalInfo {
   email: string;
   phone: string;
   linkedInUrl: string;
+  githubUrl: string;
+  mediumUrl: string;
 }
 
 export interface WorkExperienceItem {
@@ -26,7 +28,8 @@ export interface WorkExperienceItem {
 export interface EducationItem {
   qualification: string;
   institution: string;
-  period: string;
+  startDate: string;
+  endDate: string;
 }
 
 export interface SkillGroup {

@@ -1,4 +1,4 @@
-import { createHmac, randomBytes } from "node:crypto";
+import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 import { env } from "../../config/env.js";
 
 type AccessTokenPayload = {
@@ -30,6 +30,44 @@ export function hashRefreshToken(token: string): string {
   return createHmac("sha256", env.refreshTokenSecret)
     .update(token)
     .digest("hex");
+}
+
+export function verifyAccessToken(token: string): AccessTokenPayload {
+  const [encodedHeader, encodedPayload, signature] = token.split(".");
+
+  if (!encodedHeader || !encodedPayload || !signature) {
+    throw new Error("Invalid access token.");
+  }
+
+  const expectedSignature = createHmac("sha256", env.accessTokenSecret)
+    .update(`${encodedHeader}.${encodedPayload}`)
+    .digest("base64url");
+
+  const actualSignature = Buffer.from(signature);
+  const computedSignature = Buffer.from(expectedSignature);
+
+  if (
+    actualSignature.length !== computedSignature.length ||
+    !timingSafeEqual(actualSignature, computedSignature)
+  ) {
+    throw new Error("Invalid access token.");
+  }
+
+  let payload: AccessTokenPayload;
+
+  try {
+    payload = JSON.parse(
+      Buffer.from(encodedPayload, "base64url").toString("utf8"),
+    ) as AccessTokenPayload;
+  } catch {
+    throw new Error("Invalid access token.");
+  }
+
+  if (payload.type !== "access" || payload.exp <= Math.floor(Date.now() / 1000)) {
+    throw new Error("Invalid access token.");
+  }
+
+  return payload;
 }
 
 function signToken(payload: AccessTokenPayload, secret: string): string {

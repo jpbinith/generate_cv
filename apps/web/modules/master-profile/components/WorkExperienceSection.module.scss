@@ -91,6 +91,14 @@
   padding: 0.85rem 1rem;
 }
 
+.work-experience__field input[type="month"][value=""]::-webkit-datetime-edit {
+  color: transparent;
+}
+
+.work-experience__field input[type="month"]:not([value=""])::-webkit-datetime-edit {
+  color: inherit;
+}
+
 .work-experience__dates {
   display: flex;
   align-items: center;

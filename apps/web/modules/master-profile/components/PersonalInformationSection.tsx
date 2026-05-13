@@ -41,6 +41,20 @@ export function PersonalInformationSection({
           </span>
           <input defaultValue={personalInfo.linkedInUrl} type="url" />
         </label>
+
+        <label className={styles["personal-information__field"]}>
+          <span className={styles["personal-information__label"]}>
+            GitHub Profile URL
+          </span>
+          <input defaultValue={personalInfo.githubUrl} type="url" />
+        </label>
+
+        <label className={styles["personal-information__field"]}>
+          <span className={styles["personal-information__label"]}>
+            Medium Profile URL
+          </span>
+          <input defaultValue={personalInfo.mediumUrl} type="url" />
+        </label>
       </div>
     </SectionCard>
   );

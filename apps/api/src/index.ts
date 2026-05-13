@@ -5,6 +5,8 @@ import { env } from "./config/env.js";
 import { errorHandler } from "./middleware/error-handler.js";
 import { ensureRefreshTokenIndexes } from "./modules/auth/refresh-token.repository.js";
 import { authRouter } from "./modules/auth/auth.routes.js";
+import { ensureMasterProfileIndexes } from "./modules/master-profile/master-profile.repository.js";
+import { masterProfileRouter } from "./modules/master-profile/master-profile.routes.js";
 import { ensureUserIndexes } from "./modules/users/user.repository.js";
 
 const app = express();
@@ -12,6 +14,7 @@ const app = express();
 app.use(cors({ origin: env.webAppOrigin, credentials: true }));
 app.use(express.json({ limit: "10mb" }));
 app.use("/auth", authRouter);
+app.use("/master-profile", masterProfileRouter);
 
 app.get("/health", async (_req, res) => {
   const databaseOk = await pingDatabase().catch(() => false);
@@ -28,6 +31,7 @@ async function startServer() {
   await connectToDatabase();
   await ensureUserIndexes();
   await ensureRefreshTokenIndexes();
+  await ensureMasterProfileIndexes();
 
   app.listen(env.apiPort, () => {
     console.log(`API running on http://localhost:${env.apiPort}`);

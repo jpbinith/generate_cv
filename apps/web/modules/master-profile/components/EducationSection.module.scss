@@ -58,7 +58,7 @@
 
 .education-section__form-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-4);
 }
 
@@ -80,6 +80,15 @@
   border-radius: 0.7rem;
   background: #ffffff;
   padding: 0 1rem;
+}
+
+.education-section__field input[type="month"][value=""]::-webkit-datetime-edit {
+  color: transparent;
+}
+
+.education-section__field
+  input[type="month"]:not([value=""])::-webkit-datetime-edit {
+  color: inherit;
 }
 
 .education-section__qualification {

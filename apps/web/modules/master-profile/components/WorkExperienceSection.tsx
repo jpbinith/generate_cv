@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Icon } from "@/components/ui/Icon";
 import { SectionCard } from "./SectionCard";
+import { MonthInput } from "./MonthInput";
 import type { WorkExperienceItem } from "../types/master-profile.types";
 import styles from "./WorkExperienceSection.module.scss";
 
@@ -144,21 +145,17 @@ export function WorkExperienceSection({ items }: WorkExperienceSectionProps) {
               <label className={styles["work-experience__field"]}>
                 <span>Dates</span>
                 <div className={styles["work-experience__dates"]}>
-                  <input
+                  <MonthInput
                     onChange={(event) =>
                       updateDraftExperience("startDate", event.target.value)
                     }
-                    placeholder="Start date"
-                    type="text"
                     value={draftExperience.startDate}
                   />
                   <span>—</span>
-                  <input
+                  <MonthInput
                     onChange={(event) =>
                       updateDraftExperience("endDate", event.target.value)
                     }
-                    placeholder="End date"
-                    type="text"
                     value={draftExperience.endDate}
                   />
                 </div>
@@ -227,9 +224,9 @@ export function WorkExperienceSection({ items }: WorkExperienceSectionProps) {
               <label className={styles["work-experience__field"]}>
                 <span>Dates</span>
                 <div className={styles["work-experience__dates"]}>
-                  <input defaultValue={item.startDate} type="text" />
+                  <MonthInput defaultValue={item.startDate} />
                   <span>—</span>
-                  <input defaultValue={item.endDate} type="text" />
+                  <MonthInput defaultValue={item.endDate} />
                 </div>
               </label>
             </div>

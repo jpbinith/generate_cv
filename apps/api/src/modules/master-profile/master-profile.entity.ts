@@ -2,63 +2,47 @@ import type { ObjectId } from "mongodb";
 
 export interface MasterProfilePersonalInfo {
   fullName: string;
-  title: string;
   email: string;
   phone: string;
-  location: string;
-  linkedin?: string;
-  github?: string;
-  portfolio?: string;
+  linkedInUrl: string;
+  githubUrl: string;
+  mediumUrl: string;
 }
 
-export interface MasterProfileSkills {
-  languages: string[];
-  frontend: string[];
-  backend: string[];
-  ai: string[];
-  cloud: string[];
-  databases: string[];
-  tools: string[];
+export interface MasterProfileSkillGroup {
+  title: string;
+  tone: "primary" | "tertiary";
+  items: string[];
+  addLabel: string;
 }
 
 export interface MasterProfileExperienceItem {
-  role: string;
-  company: string;
-  location?: string;
+  companyName: string;
+  roleTitle: string;
+  location: string;
   startDate: string;
-  endDate?: string;
-  isCurrent?: boolean;
-  description?: string;
-  bullets: string[];
-  technologies?: string[];
-}
-
-export interface MasterProfileProjectItem {
-  name: string;
-  description: string;
-  bullets: string[];
-  technologies: string[];
-  link?: string;
+  endDate: string;
+  achievements: string[];
 }
 
 export interface MasterProfileEducationItem {
-  degree: string;
+  qualification: string;
   institution: string;
-  location?: string;
-  startDate?: string;
-  endDate?: string;
+  startDate: string;
+  endDate: string;
 }
 
 export interface MasterProfile {
   _id: ObjectId;
   userId: ObjectId;
   personalInfo: MasterProfilePersonalInfo;
-  summary: string;
-  skills: MasterProfileSkills;
-  experience: MasterProfileExperienceItem[];
-  projects: MasterProfileProjectItem[];
+  emailHelperText: string;
+  summarySuggestion: string;
+  professionalSummary: string;
+  workExperience: MasterProfileExperienceItem[];
   education: MasterProfileEducationItem[];
-  certifications: string[];
+  skillGroups: MasterProfileSkillGroup[];
+  autosaveLabel: string;
   createdAt: Date;
   updatedAt: Date;
 }

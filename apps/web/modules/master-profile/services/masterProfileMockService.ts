@@ -26,6 +26,8 @@ export function getMasterProfileViewModel(): MasterProfileViewModel {
       email: "",
       phone: "",
       linkedInUrl: "",
+      githubUrl: "",
+      mediumUrl: "",
     },
     emailHelperText:
       "Use a professional email address like name.surname@provider.com",

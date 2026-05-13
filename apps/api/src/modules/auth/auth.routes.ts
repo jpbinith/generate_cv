@@ -1,10 +1,10 @@
+import type { Response } from "express";
 import { Router } from "express";
 import {
-  ACCESS_TOKEN_COOKIE_NAME,
-  REFRESH_TOKEN_COOKIE_NAME,
-} from "./auth.constants.js";
+  requireRefreshToken,
+  type AuthenticatedLocals,
+} from "../../middleware/authentication.js";
 import { clearAuthCookies, setAuthCookies } from "./auth.cookies.js";
-import { readCookieValue } from "./auth-request.utils.js";
 import {
   refreshAuthSession,
   signIn,
@@ -34,31 +34,30 @@ authRouter.post("/sign-in", async (req, res) => {
   });
 });
 
-authRouter.post("/refresh", async (req, res) => {
-  const refreshToken = readCookieValue(
-    req.headers.cookie,
-    REFRESH_TOKEN_COOKIE_NAME,
-  );
-  const result = await refreshAuthSession(refreshToken);
+authRouter.post(
+  "/refresh",
+  requireRefreshToken,
+  async (req, res: Response<unknown, AuthenticatedLocals>) => {
+    const result = await refreshAuthSession(res.locals.refreshToken);
 
-  setAuthCookies(res, result.tokens);
+    setAuthCookies(res, result.tokens);
 
-  res.status(200).json({
-    message: "Session refreshed successfully.",
-    user: result.user,
-  });
-});
+    res.status(200).json({
+      message: "Session refreshed successfully.",
+      user: result.user,
+    });
+  },
+);
 
-authRouter.post("/sign-out", async (req, res) => {
-  const refreshToken = readCookieValue(
-    req.headers.cookie,
-    REFRESH_TOKEN_COOKIE_NAME,
-  );
+authRouter.post(
+  "/sign-out",
+  requireRefreshToken,
+  async (req, res: Response<unknown, AuthenticatedLocals>) => {
+    await signOut(res.locals.refreshToken);
+    clearAuthCookies(res);
 
-  await signOut(refreshToken);
-  clearAuthCookies(res);
-
-  res.status(200).json({
-    message: "Signed out successfully.",
-  });
-});
+    res.status(200).json({
+      message: "Signed out successfully.",
+    });
+  },
+);
